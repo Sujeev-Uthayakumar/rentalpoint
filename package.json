@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Sujeev-Uthayakumar/rentalpoint/issues"
   },
-  "homepage": "https://github.com/Sujeev-Uthayakumar/rentalpoint#readme"
+  "homepage": "https://github.com/Sujeev-Uthayakumar/rentalpoint#readme",
+  "dependencies": {
+    "mysql": "^2.18.1"
+  }
 }
