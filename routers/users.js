@@ -3,8 +3,8 @@ const express = require("express");
 const app = express.Router();
 
 app.use("/", (req, res) => {
-  res.render("index.hbs", {
-    text: "hello world test",
+  res.render("index1", {
+    text1: "hello world test",
   });
 });
 
