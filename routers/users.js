@@ -2,14 +2,15 @@ const express = require("express");
 
 const app = express.Router();
 
-app.use("/", (req, res) => {
-  res.render("index1", {
-    text1: "hello world test",
+app.get("/", (req, res) => {
+  res.render("main", {
+    text: "kuygiuhiuhiuiu",
+    layout: false,
   });
 });
 
 app.get("/users", (req, res) => {
-  res.send("signup");
+  res.send("login");
 });
 
 app.post("/users/login", (req, res) => {
