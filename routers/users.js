@@ -5,7 +5,6 @@ const app = express.Router();
 app.get("/", (req, res) => {
   res.render("main", {
     text: "kuygiuhiuhiuiu",
-    layout: false,
   });
 });
 

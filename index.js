@@ -7,16 +7,16 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.engine(
-  "handlebars",
+  "hbs",
   hbs({
-    layoutsDir: __dirname + "/views/layouts",
+    layoutsDir: __dirname + "/views/layouts/",
     extname: "hbs",
-    partialsDir: __dirname + "/views/partials",
+    partialsDir: __dirname + "/views/partials/",
     defaultLayout: "layout",
   })
 );
 
-app.set("view engine", "handlebars");
+app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "../public")));
