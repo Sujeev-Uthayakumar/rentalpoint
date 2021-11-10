@@ -1,27 +1,31 @@
 const express = require("express");
+const mysql = require("mysql2");
 
-const app = express.Router();
+const connection = require("../config/database");
+const router = express.Router();
 
-app.get("/", (req, res) => {
+router.get("/", (req, res) => {
   res.render("main", {
     text: "kuygiuhiuhiuiu",
   });
 });
 
-app.get("/users", (req, res) => {
+router.get("/login", (req, res) => {
+  res.render("login", {
+    text: "hello",
+  });
+});
+
+router.post("/users/login", (req, res) => {
   res.send("login");
 });
 
-app.post("/users/login", (req, res) => {
-  res.send("login");
-});
-
-app.get("/users/account", (req, res) => {
+router.get("/users/account", (req, res) => {
   res.send("account");
 });
 
-app.get("/users/logout", (req, res) => {
+router.get("/users/logout", (req, res) => {
   res.send("logout");
 });
 
-module.exports = app;
+module.exports = router;

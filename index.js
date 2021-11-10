@@ -1,5 +1,7 @@
 const express = require("express");
 const userRouter = require("./routers/users");
+const listingRouter = require("./routers/listings");
+const otherRouter = require("./routers/other");
 const path = require("path");
 const hbs = require("express-handlebars");
 
@@ -21,6 +23,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(userRouter);
+app.use(listingRouter);
 
 app.listen(port, () => {
   console.log("Server is up on port " + port);
