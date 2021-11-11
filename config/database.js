@@ -10,9 +10,7 @@ const connection = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 
-connection.query("SELECT * FROM accounts", function (error, results, fields) {
-  if (error) throw error;
-  console.log("The solution is: ", results);
-});
-
-// module.exports = getConnection;
+function getConnection() {
+  return connection;
+}
+module.exports = getConnection;

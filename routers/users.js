@@ -4,12 +4,6 @@ const mysql = require("mysql2");
 const connection = require("../config/database");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.render("main", {
-    text: "kuygiuhiuhiuiu",
-  });
-});
-
 router.get("/login", (req, res) => {
   res.render("login", {
     text: "hello",
