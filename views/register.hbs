@@ -1,25 +1,31 @@
-<form>
+<div class="callout primary">
+  <h5>This is a secondary callout</h5>
+  <p>{{{errorMessage}}}</p>
+  <a href="#">It's dangerous to go alone, take this.</a>
+</div>
+
+<form action="/register" method="POST" autocomplete="off"> 
   <div class="row">
     <fieldset class="fieldset small-8 small-centered columns">
       <legend>User Information</legend>
       <div class="medium-6 columns">
         <label>First Name
-          <input type="text" placeholder="John" required />
+          <input type="text" placeholder="John" name="fname"  />
         </label>
       </div>
       <div class="medium-6 columns">
         <label>Last Name
-          <input type="text" placeholder="Smith" required/>
+          <input type="text" placeholder="Smith" name="lname" />
         </label>
       </div>
       <div class="medium-6 columns">
         <label>Country
-          <input type="text" placeholder="Canada" required/>
+          <input type="text" placeholder="Canada" name="country" />
         </label>
       </div>
       <div class="large-12 columns">
         <label>Date of Birth            
-            <input type="date" value="2001-06-01" required>
+            <input type="date" value="2001-06-01" name="date" >
         </label>
         </div>
       </div>
@@ -32,24 +38,24 @@
       <legend>Account Information</legend>
       <div class="medium-6 columns">
         <label>Email
-          <input type="text" placeholder="johnsmith@gmail.com" required/>
+          <input type="text" placeholder="johnsmith@gmail.com" name="email" />
         </label>
       </div>
       <div class="medium-6 columns">
         <label>Password
-          <input type="password" placeholder="Password" required/>
+          <input type="password" placeholder="Password" name="password" />
         </label>
       </div>
       <div class="medium-6 columns">
         <label>Confirm Password
-          <input type="password" placeholder="Confirm Password" required/>
+          <input type="password" placeholder="Confirm Password" name="confirm" />
         </label>
       </div>
     </fieldset>
   </div>
   <div class="row">
       <div class="small-5 small-centered columns">
-      <p><input type="submit" class="button expanded" value="Register" required ></input></p>
+      <p><input type="submit" class="button expanded" value="Register"  ></input></p>
       </div>
   </div>
 </form>
