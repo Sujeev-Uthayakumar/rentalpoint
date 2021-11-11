@@ -4,9 +4,6 @@ const session = require("express-session");
 const connection = require("../config/database");
 const router = express.Router();
 
-router.use(express.urlencoded({ extended: true }));
-router.use(express.json());
-
 router.use(
   session({
     secret: "secret",

@@ -1,7 +1,7 @@
 <div class="row">
 
   <div class="medium-7 large-6 columns">
-    <h1>For All Your Car Rental Needs - RentalPoint</h1>
+    <h1>For All Your Car Rental Needs - Rental Point</h1>
     <p class="subheader">Find the perfect car to conquer any occasion. From laid
       back city driving to exploring the great outdoors. We have a car to fit
       any need!</p>
@@ -11,16 +11,26 @@
 
   <div class="medium-5 large-3 columns">
     <div class="callout secondary">
-      <form>
+      <form action="/search" method="POST">
         <div class="row">
           <div class="small-12 columns">
             <label>Location
-              <input type="text" placeholder="Search location" />
+              <input
+                type="text"
+                name="locationSearch"
+                placeholder="Search location"
+                required
+              />
             </label>
           </div>
           <div class="small-12 columns">
             <label>Number of Seats
-              <input type="number" placeholder="Seats required" />
+              <input
+                type="number"
+                name="seatSearch"
+                placeholder="Seats required"
+                required
+              />
             </label>
             <button type="submit" class="button">Search Now!</button>
           </div>
@@ -53,7 +63,8 @@
           {{lname}},
           {{location}}</p>
         <p class="subheader">
-          Key Info: Seats:{{seats}}
+          Key Info: Seats:
+          {{seats}}
           Condition:{{state}}/10
         </p>
       </div>
