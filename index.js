@@ -3,8 +3,6 @@ const userRouter = require("./routers/users");
 const listingRouter = require("./routers/listings");
 const basicRouter = require("./routers/basic");
 const path = require("path");
-const connection = require("./config/database");
-connection();
 const hbs = require("express-handlebars");
 
 const app = express();
@@ -24,6 +22,8 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.json()); // support json encoded bodies
+app.use(express.urlencoded({ extended: false }));
 
 app.use(userRouter);
 app.use(listingRouter);
