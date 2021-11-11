@@ -34,8 +34,8 @@ router.post("/auth", (req, res) => {
   }
 });
 
-router.get("/users/account", (req, res) => {
-  res.send("account");
+router.get("/register", (req, res) => {
+  res.render("register");
 });
 
 router.get("/users/logout", (req, res) => {

@@ -15,7 +15,9 @@ router.post("/search", (req, res) => {
     "SELECT * FROM listings, listing_car WHERE listings.location = ? AND listing_car.seats = ? AND listings.host_id IN (SELECT id FROM accounts)",
     [req.body.locationSearch, req.body.seatSearch],
     function (error, results, fields) {
-      res.render("carlistings");
+      res.render("carlistings", {
+        results: results,
+      });
     }
   );
 });
