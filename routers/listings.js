@@ -12,7 +12,7 @@ router.get("/listings", (req, res) => {
 
 router.post("/search", (req, res) => {
   connection().query(
-    "SELECT * FROM listings, listing_car WHERE listings.location = ? AND listing_car.seats = ? AND listings.host_id IN (SELECT id FROM accounts)",
+    "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id  WHERE full_listings.location = ? AND listing_car.seats = ?",
     [req.body.locationSearch, req.body.seatSearch],
     function (error, results, fields) {
       res.render("carlistings", {
