@@ -18,9 +18,8 @@ router.get("/login", (req, res) => {
   res.render("login");
 });
 
-router.post("/auth", (req, res) => {
+router.post("/login", (req, res) => {
   if (req.body.username && req.body.password) {
-    console.log(req.body);
     connection().query(
       "SELECT * FROM accounts WHERE email = ? AND password = ?",
       [req.body.username, req.body.password],
@@ -30,18 +29,24 @@ router.post("/auth", (req, res) => {
           req.session.username = req.body.username;
           res.redirect("/");
         } else {
-          res.send("Please enter Username and Password!");
+          res.render("login", {
+            errorMessage: "No account can be found matching your input",
+          });
         }
       }
     );
+  } else {
+    res.render("login", {
+      errorMessage: "Please fill in all login details",
+    });
   }
 });
 
-router.get("/register", (req, res) => {
+router.get("/register", (req, res, next) => {
   res.render("register");
 });
 
-router.post("/register", (req, res) => {
+router.post("/register", (req, res, next) => {
   if (
     req.body.fname &&
     req.body.lname &&
@@ -85,20 +90,14 @@ router.post("/register", (req, res) => {
               req.body.country,
               req.body.date,
               req.body.password,
-            ]
-          ),
+            ],
             function (error, results, fields) {
-              if (error) {
-                res.render("register", {
-                  errorMessage: "Something went wrong, try again later",
-                });
-              } else {
-                res.render("login", {
-                  successMessage:
-                    "You have successfully registered, please login below",
-                });
-              }
-            };
+              res.render("login", {
+                successMessage:
+                  "Congratulations, you have registered. Log in below",
+              });
+            }
+          );
         }
       }
     );

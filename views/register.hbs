@@ -1,8 +1,15 @@
-<div class="callout primary">
-  <h5>This is a secondary callout</h5>
-  <p>{{{errorMessage}}}</p>
-  <a href="#">It's dangerous to go alone, take this.</a>
+{{#if errorMessage includeZero=true}}
+<div class="callout alert">
+  <h5>{{{errorMessage}}}</h5>
+  <a href="#">Please make the necessary changes</a>
 </div>
+{{/if}}
+{{#if successMessage includeZero=true}}
+<div class="callout success">
+  <h5>{{{successMessage}}}</h5>
+  <a href="#">Please enter the details of your newly created account</a>
+</div>
+{{/if}}
 
 <form action="/register" method="POST" autocomplete="off"> 
   <div class="row">
@@ -59,3 +66,4 @@
       </div>
   </div>
 </form>
+

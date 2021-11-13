@@ -1,6 +1,20 @@
+{{#if successMessage includeZero=true}}
+<div class="callout success">
+  <h5>{{{successMessage}}}</h5>
+  <a href="#">Please enter the details of your newly created account</a>
+</div>
+{{/if}}
+
+{{#if errorMessage includeZero=true}}
+<div class="callout alert">
+  <h5>{{{errorMessage}}}</h5>
+  <a href="#">Please make the necessary changes</a>
+</div>
+{{/if}}
 <div class="row">
 <div class="small-7 small-centered columns">
-<form class="log-in-form" action="/auth" method="POST">
+
+<form class="log-in-form" action="/login" method="POST">
   <h4 class="text-center">Log in with your email account</h4>
   <label>Email
     <input type="email" name="username" placeholder="somebody@example.com">
