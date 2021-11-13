@@ -118,7 +118,7 @@ router.post("/seller", (req, res) => {
 });
 
 router.get("/account", (req, res) => {
-  console.log(req.session);
+  res.render("account");
 });
 
 router.get("/logout", (req, res) => {
