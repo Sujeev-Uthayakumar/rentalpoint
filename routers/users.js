@@ -1,8 +1,11 @@
 const express = require("express");
 const session = require("express-session");
+const relativeTime = require("dayjs/plugin/relativeTime");
+const dayjs = require("dayjs");
 
 const connection = require("../config/database");
 const router = express.Router();
+dayjs.extend(relativeTime);
 
 router.use(
   session({
@@ -39,8 +42,6 @@ router.get("/register", (req, res) => {
 });
 
 router.post("/register", (req, res) => {
-  const userDate = new Date(req.body.date);
-  const currentDate = new Date();
   if (
     req.body.fname &&
     req.body.lname &&
@@ -67,7 +68,12 @@ router.post("/register", (req, res) => {
           req.body.confirm.length < 8
         ) {
           res.render("register", {
-            errorMessage: "Chosen password must be at least 7 characters ",
+            errorMessage: "Chosen password must be at least 7 characters",
+          });
+        } else if (parseFloat(dayjs(req.body.date).toNow(true)) < 18) {
+          res.render("register", {
+            errorMessage:
+              "You need to be at least 18 years old to make an account",
           });
         } else {
           connection().query(
@@ -87,8 +93,9 @@ router.post("/register", (req, res) => {
                   errorMessage: "Something went wrong, try again later",
                 });
               } else {
-                res.render("register", {
-                  successMessage: "You have successfully registered",
+                res.render("login", {
+                  successMessage:
+                    "You have successfully registered, please login below",
                 });
               }
             };
