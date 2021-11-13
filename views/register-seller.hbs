@@ -4,8 +4,14 @@
   <a href="#">Please make the necessary changes</a>
 </div>
 {{/if}}
+{{#if successMessage includeZero=true}}
+<div class="callout success">
+  <h5>{{{successMessage}}}</h5>
+  <a href="#">Please enter the details of your newly created account</a>
+</div>
+{{/if}}
 
-<form action="/register" method="POST" autocomplete="off"> 
+<form action="/seller" method="POST" autocomplete="off"> 
   <div class="row">
     <fieldset class="fieldset small-8 small-centered columns">
       <legend>User Information</legend>
@@ -54,10 +60,28 @@
       </div>
     </fieldset>
   </div>
+
+    <div class="row">
+    <fieldset class="fieldset small-8 small-centered columns">
+      <legend>Additional Information</legend>
+      <div class="medium-6 columns">
+        <label>Phone Number
+          <input type="text" placeholder="johnsmith@gmail.com" name="phone" />
+        </label>
+      </div>
+      <div class="medium-6 columns">
+        <label>License Number
+          <input type="text" placeholder="Password" name="license" />
+        </label>
+      </div>
+    </fieldset>
+  </div>
+  
   <div class="row">
       <div class="small-5 small-centered columns">
       <p><input type="submit" class="button expanded" value="Register"  ></input></p>
       </div>
   </div>
+  <p class="text-center"><a href="/register">Not sure about becoming a seller? Try being a renter.</a></p>
 </form>
 

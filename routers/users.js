@@ -108,6 +108,15 @@ router.post("/register", (req, res, next) => {
   }
 });
 
+router.get("/seller", (req, res) => {
+  res.render("register-seller");
+});
+
+router.post("/seller", (req, res) => {
+  res.send("Testing");
+  console.log(req.body);
+});
+
 router.get("/account", (req, res) => {
   console.log(req.session);
 });
