@@ -3,7 +3,7 @@ const session = require("express-session");
 const relativeTime = require("dayjs/plugin/relativeTime");
 const dayjs = require("dayjs");
 
-const connection = require("../config/database");
+const connection = require("../helpers/database");
 const router = express.Router();
 dayjs.extend(relativeTime);
 

@@ -1,5 +1,5 @@
 const express = require("express");
-const connection = require("../config/database");
+const connection = require("../helpers/database");
 
 const router = express.Router();
 
@@ -16,7 +16,16 @@ router.get("", (req, res) => {
 });
 
 router.get("/about", (req, res) => {
-  res.render("about");
+  connection().query(
+    "SELECT  COUNT(DISTINCT accounts.id) AS users, COUNT(DISTINCT listings.listing_id) AS listings, COUNT(DISTINCT listing_car.car_id) AS cars FROM accounts, listings, listing_car",
+    function (error, results, fields) {
+      res.render("about", {
+        users: results[0].users,
+        listings: results[0].listings,
+        cars: results[0].cars,
+      });
+    }
+  );
 });
 
 module.exports = router;

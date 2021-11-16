@@ -2,7 +2,7 @@ const express = require("express");
 const mysql = require("mysql2");
 
 const router = express.Router();
-const connection = require("../config/database");
+const connection = require("../helpers/database");
 
 router.use(express.json());
 
