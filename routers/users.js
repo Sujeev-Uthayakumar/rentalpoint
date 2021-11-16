@@ -4,6 +4,7 @@ const relativeTime = require("dayjs/plugin/relativeTime");
 const dayjs = require("dayjs");
 
 const connection = require("../helpers/database");
+const { default: flatpickr } = require("flatpickr");
 const router = express.Router();
 dayjs.extend(relativeTime);
 
@@ -113,8 +114,71 @@ router.get("/seller", (req, res) => {
 });
 
 router.post("/seller", (req, res) => {
-  res.send("Testing");
-  console.log(req.body);
+  if (
+    req.body.fname &&
+    req.body.lname &&
+    req.body.country &&
+    req.body.date &&
+    req.body.email &&
+    req.body.password &&
+    req.body.confirm &&
+    req.body.phone &&
+    req.body.license
+  ) {
+    connection().query(
+      "SELECT * FROM accounts WHERE email=?",
+      [req.body.email],
+      function (error, results, fields) {
+        if (results.length > 0) {
+          res.render("register-seller", {
+            errorMessage: "The email is already taken, try another one",
+          });
+        } else if (req.body.password !== req.body.confirm) {
+          res.render("register-seller", {
+            errorMessage: "The passwords don't match, please try again",
+          });
+        } else if (
+          req.body.password.length < 8 ||
+          req.body.confirm.length < 8
+        ) {
+          res.render("register-seller", {
+            errorMessage: "Chosen password must be at least 7 characters",
+          });
+        } else if (parseFloat(dayjs(req.body.date).toNow(true)) < 18) {
+          res.render("register-seller", {
+            errorMessage:
+              "You need to be at least 18 years old to make an account",
+          });
+        } else {
+          connection().query(
+            "INSERT INTO accounts(fname, lname, email, country, birthdate, password) VALUES(?,?,?,?,?,?)",
+            [
+              req.body.fname,
+              req.body.lname,
+              req.body.email,
+              req.body.country,
+              req.body.date,
+              req.body.password,
+            ],
+            function (error, results, fields) {
+              res.render("login", {
+                successMessage:
+                  "Congratulations, you have registered as a seller. Log in below",
+              });
+              connection().query(
+                "INSERT INTO verified_accounts(user_id, license, isSeller, phone) VALUES(?, ?, ?, ?)",
+                [results.insertId, req.body.license, 1, req.body.phone]
+              );
+            }
+          );
+        }
+      }
+    );
+  } else {
+    res.render("register-seller", {
+      errorMessage: "All input fields must be filled in",
+    });
+  }
 });
 
 router.get("/account", (req, res) => {
