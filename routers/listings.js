@@ -7,7 +7,7 @@ const connection = require("../helpers/database");
 router.use(express.json());
 
 router.get("/listings", (req, res) => {
-  res.send("Listings");
+  res.render("carlistings", { loggedIn: req.session.loggedin });
 });
 
 router.post("/search", (req, res) => {
@@ -17,6 +17,7 @@ router.post("/search", (req, res) => {
     function (error, results, fields) {
       res.render("carlistings", {
         results: results,
+        loggedIn: req.session.loggedin,
       });
     }
   );

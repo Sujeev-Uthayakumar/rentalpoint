@@ -16,7 +16,7 @@ router.use(
   })
 );
 router.get("/login", (req, res) => {
-  res.render("login");
+  res.render("login", { loggedIn: req.session.loggedin });
 });
 
 router.post("/login", (req, res) => {
@@ -28,10 +28,12 @@ router.post("/login", (req, res) => {
         if (results.length > 0) {
           req.session.loggedin = true;
           req.session.username = req.body.username;
+          req.session.userid = results[0].id;
           res.redirect("/");
         } else {
           res.render("login", {
-            errorMessage: "No account can be found matching your input",
+            errorMessage: "No account can be found matching your credentials",
+            loggedIn: req.session.loggedin,
           });
         }
       }
@@ -39,15 +41,18 @@ router.post("/login", (req, res) => {
   } else {
     res.render("login", {
       errorMessage: "Please fill in all login details",
+      loggedIn: req.session.loggedin,
     });
   }
 });
 
-router.get("/register", (req, res, next) => {
-  res.render("register");
+router.get("/register", (req, res) => {
+  res.render("register", {
+    loggedIn: req.session.loggedin,
+  });
 });
 
-router.post("/register", (req, res, next) => {
+router.post("/register", (req, res) => {
   if (
     req.body.fname &&
     req.body.lname &&
@@ -64,10 +69,12 @@ router.post("/register", (req, res, next) => {
         if (results.length > 0) {
           res.render("register", {
             errorMessage: "The email is already taken, try another one",
+            loggedIn: req.session.loggedin,
           });
         } else if (req.body.password !== req.body.confirm) {
           res.render("register", {
             errorMessage: "The passwords don't match, please try again",
+            loggedIn: req.session.loggedin,
           });
         } else if (
           req.body.password.length < 8 ||
@@ -75,11 +82,19 @@ router.post("/register", (req, res, next) => {
         ) {
           res.render("register", {
             errorMessage: "Chosen password must be at least 7 characters",
+            loggedIn: req.session.loggedin,
           });
         } else if (parseFloat(dayjs(req.body.date).toNow(true)) < 18) {
           res.render("register", {
             errorMessage:
               "You need to be at least 18 years old to make an account",
+            loggedIn: req.session.loggedin,
+          });
+        } else if (req.session.loggedIn) {
+          res.render("register", {
+            errorMessage:
+              "You are already logged in, please logout before proceeding",
+            loggedIn: req.session.loggedin,
           });
         } else {
           connection().query(
@@ -96,6 +111,7 @@ router.post("/register", (req, res, next) => {
               res.render("login", {
                 successMessage:
                   "Congratulations, you have registered. Log in below",
+                loggedIn: req.session.loggedin,
               });
             }
           );
@@ -105,12 +121,15 @@ router.post("/register", (req, res, next) => {
   } else {
     res.render("register", {
       errorMessage: "All input fields must be filled in",
+      loggedIn: req.session.loggedin,
     });
   }
 });
 
 router.get("/seller", (req, res) => {
-  res.render("register-seller");
+  res.render("register-seller", {
+    loggedIn: req.session.loggedin,
+  });
 });
 
 router.post("/seller", (req, res) => {
@@ -132,10 +151,12 @@ router.post("/seller", (req, res) => {
         if (results.length > 0) {
           res.render("register-seller", {
             errorMessage: "The email is already taken, try another one",
+            loggedIn: req.session.loggedin,
           });
         } else if (req.body.password !== req.body.confirm) {
           res.render("register-seller", {
             errorMessage: "The passwords don't match, please try again",
+            loggedIn: req.session.loggedin,
           });
         } else if (
           req.body.password.length < 8 ||
@@ -143,11 +164,19 @@ router.post("/seller", (req, res) => {
         ) {
           res.render("register-seller", {
             errorMessage: "Chosen password must be at least 7 characters",
+            loggedIn: req.session.loggedin,
           });
         } else if (parseFloat(dayjs(req.body.date).toNow(true)) < 18) {
           res.render("register-seller", {
             errorMessage:
               "You need to be at least 18 years old to make an account",
+            loggedIn: req.session.loggedin,
+          });
+        } else if (req.session.loggedIn) {
+          res.render("register", {
+            errorMessage:
+              "You are already logged in, please logout before proceeding",
+            loggedIn: req.session.loggedin,
           });
         } else {
           connection().query(
@@ -164,6 +193,7 @@ router.post("/seller", (req, res) => {
               res.render("login", {
                 successMessage:
                   "Congratulations, you have registered as a seller. Log in below",
+                loggedIn: req.session.loggedin,
               });
               connection().query(
                 "INSERT INTO verified_accounts(user_id, license, isSeller, phone) VALUES(?, ?, ?, ?)",
@@ -177,16 +207,15 @@ router.post("/seller", (req, res) => {
   } else {
     res.render("register-seller", {
       errorMessage: "All input fields must be filled in",
+      loggedIn: req.session.loggedin,
     });
   }
 });
 
 router.get("/account", (req, res) => {
-  res.render("account");
-});
-
-router.get("/logout", (req, res) => {
-  res.send("logout");
+  res.render("account", {
+    loggedIn: req.session.loggedin,
+  });
 });
 
 module.exports = router;

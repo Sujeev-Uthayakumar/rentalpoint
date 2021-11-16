@@ -8,7 +8,40 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
-{{> navbar}}
+    
+{{!-- {{> navbar}} --}}
+<div
+  class="title-bar"
+  data-responsive-toggle="realEstateMenu"
+  data-hide-for="small"
+>
+  <button class="menu-icon" type="button" data-toggle></button>
+  <div class="title-bar-title">Menu</div>
+</div>
+
+<div class="top-bar" id="realEstateMenu">
+  <div class="top-bar-left">
+    <ul class="menu" data-responsive-menu="accordion">
+      <li class="menu-text">Rental Point</li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/listings">Listings</a></li>
+      <li><a href="/seller">Become a Seller</a></li>
+    </ul>
+  </div>
+  <div class="top-bar-right">
+    <ul class="menu">
+      <li><a href="/account">My Account</a></li>
+      {{# if loggedIn}}
+						<li><a href="/logout" class="button" class="menu-text">Logout</a></li>
+					{{else }}
+						<li><a href="/login" class="button" class="menu-text">Login</a></li>
+			{{/if}}
+      
+    </ul>
+  </div>
+</div>
+
 <br>
 {{{body}}}
 {{> footer}}

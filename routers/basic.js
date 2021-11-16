@@ -10,6 +10,7 @@ router.get("", (req, res) => {
       if (error) throw error;
       res.render("main", {
         results: results,
+        loggedIn: req.session.loggedin,
       });
     }
   );
@@ -23,9 +24,15 @@ router.get("/about", (req, res) => {
         users: results[0].users,
         listings: results[0].listings,
         cars: results[0].cars,
+        loggedIn: req.session.loggedin,
       });
     }
   );
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/");
 });
 
 module.exports = router;
