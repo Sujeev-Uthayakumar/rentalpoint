@@ -213,9 +213,13 @@ router.post("/seller", (req, res) => {
 });
 
 router.get("/account", (req, res) => {
-  res.render("account", {
-    loggedIn: req.session.loggedin,
-  });
+  if (req.session.loggedin) {
+    res.render("account", {
+      loggedIn: req.session.loggedin,
+    });
+  } else {
+    res.redirect("/login");
+  }
 });
 
 module.exports = router;
