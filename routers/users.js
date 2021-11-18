@@ -229,7 +229,7 @@ router.get("/account", (req, res) => {
         req.session.userid,
       ],
       function (error, results, fields) {
-        console.log(results[2]);
+        console.log(req.body);
         res.render("account", {
           loggedIn: req.session.loggedin,
           accountDetails: results[0][0],
@@ -257,6 +257,21 @@ router.post("/account", (req, res) => {
     } else {
       res.redirect("/account");
     }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.get("/account/:id", (req, res) => {
+  console.log(req.params);
+  if (req.session.loggedin) {
+    connection().query(
+      "DELETE FROM listings WHERE listing_id=?",
+      [req.params.id],
+      function (error, results, fields) {
+        res.redirect("/account");
+      }
+    );
   } else {
     res.redirect("/login");
   }

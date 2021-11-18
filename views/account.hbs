@@ -183,14 +183,15 @@
         <div class="row">
           <div class="small-8 medium-10 columns">
             <h6 class="travel-feature-card-title">{{manufacturer}} {{model}} {{car_year}}</h6>
-            <p>Date Created: {{datecreated}}</p>
-            <p>Host Email: </p>
+            <p>Date Created: {{datecreated}} <br>
+            Vehicle: <br>
+            Location: </p>
           </div>
         </div> 
       </div>
 
       <div class="small-12 medium-3 columns travel-feature-card-price">
-        <button type="button" class="alert button">Delete Listing</button>
+        <button name={{listing_id}} type="button" class="alert button"><a href="/account/{{listing_id}}">Delete Listing</a></button>
       </div>
     </div> 
   </div>
