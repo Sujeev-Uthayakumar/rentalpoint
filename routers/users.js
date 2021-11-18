@@ -81,7 +81,7 @@ router.post("/register", (req, res) => {
           req.body.confirm.length < 8
         ) {
           res.render("register", {
-            errorMessage: "Chosen password must be at least 7 characters",
+            errorMessage: "Chosen password must be at least 8 characters",
             loggedIn: req.session.loggedin,
           });
         } else if (parseFloat(dayjs(req.body.date).toNow(true)) < 18) {
@@ -163,7 +163,7 @@ router.post("/seller", (req, res) => {
           req.body.confirm.length < 8
         ) {
           res.render("register-seller", {
-            errorMessage: "Chosen password must be at least 7 characters",
+            errorMessage: "Chosen password must be at least 8 characters",
             loggedIn: req.session.loggedin,
           });
         } else if (parseFloat(dayjs(req.body.date).toNow(true)) < 18) {
@@ -214,9 +214,42 @@ router.post("/seller", (req, res) => {
 
 router.get("/account", (req, res) => {
   if (req.session.loggedin) {
-    res.render("account", {
-      loggedIn: req.session.loggedin,
-    });
+    const queries = [
+      "SELECT fname, lname, country, email, DATE_FORMAT(birthdate, '%Y/%m/%d') AS birthdate  FROM accounts WHERE email=?",
+      "SELECT isSeller FROM verified_accounts, accounts WHERE verified_accounts.user_id = accounts.id AND accounts.email = ?",
+      "SELECT * FROM listings WHERE host_id IN (SELECT user_id FROM verified_accounts,accounts WHERE accounts.email=? AND verified_accounts.user_id = accounts.id)",
+    ];
+    connection().query(
+      queries.join(";"),
+      [req.session.username, req.session.username, req.session.username],
+      function (error, results, fields) {
+        res.render("account", {
+          loggedIn: req.session.loggedin,
+          accountDetails: results[0][0],
+          registeredSeller: true ? results[1].length > 0 : false,
+        });
+        console.log(req.body);
+      }
+    );
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.post("/account", (req, res) => {
+  if (req.session.loggedin) {
+    console.log(req.body);
+    if (
+      req.body.changeLocation ||
+      (req.body.changePassword && req.body.changePassword2)
+    ) {
+      console.log("success");
+    } else {
+      res.render("account", {
+        errorMessage:
+          "Please fill in either the location to be changed, or the password to be changed along with the confirmation of that password",
+      });
+    }
   } else {
     res.redirect("/login");
   }
