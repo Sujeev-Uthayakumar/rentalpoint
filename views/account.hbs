@@ -7,13 +7,6 @@
   </div>
 </div>
 
-{{#if errorMessage includeZero=true}}
-<div class="callout alert">
-  <h5>{{{errorMessage}}}</h5>
-  <a href="#">Please make the necessary changes</a>
-</div>
-{{/if}}
-
 <ul class="tabs" data-active-collapse="true" data-tabs id="collapsing-tabs">
   <li class="tabs-title is-active"><a
       href="#panel1c"
@@ -78,16 +71,13 @@
         <div class="row">
           <div class="small-8 medium-10 columns">
             <h6 class="travel-feature-card-title"></h6>
+            <div class="callout primary">
+              <p>** It is important to keep your location as accurate as possible to view listings relevant to you. Anytime you're expriencing a move, feel free to change your location! **</p>
+          </div>
+            
             <form action="/account" method="POST" id="changeForm">
             <label>Location
               <input type="text" name="changeLocation" placeholder="Location">
-            </label>
-            <hr>
-            <label>Password
-              <input type="password" name="changePassword" placeholder="Password">
-            </label>
-            <label>Confirm Password
-              <input type="password" name="changePassword2" placeholder="Confirm Password">
             </label>
             </form>
           </div>

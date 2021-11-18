@@ -7,7 +7,6 @@ const connection = require("../helpers/database");
 const { default: flatpickr } = require("flatpickr");
 const router = express.Router();
 dayjs.extend(relativeTime);
-
 router.use(
   session({
     secret: "secret",
@@ -15,6 +14,7 @@ router.use(
     saveUninitialized: true,
   })
 );
+
 router.get("/login", (req, res) => {
   res.render("login", { loggedIn: req.session.loggedin });
 });
@@ -228,7 +228,6 @@ router.get("/account", (req, res) => {
           accountDetails: results[0][0],
           registeredSeller: true ? results[1].length > 0 : false,
         });
-        console.log(req.body);
       }
     );
   } else {
@@ -238,17 +237,13 @@ router.get("/account", (req, res) => {
 
 router.post("/account", (req, res) => {
   if (req.session.loggedin) {
-    console.log(req.body);
-    if (
-      req.body.changeLocation ||
-      (req.body.changePassword && req.body.changePassword2)
-    ) {
-      console.log("success");
+    console.log("test");
+    if (req.body.changeLocation) {
+      console.log("changed account");
+      res.redirect("/account");
     } else {
-      res.render("account", {
-        errorMessage:
-          "Please fill in either the location to be changed, or the password to be changed along with the confirmation of that password",
-      });
+      console.log("no input");
+      res.redirect("/account");
     }
   } else {
     res.redirect("/login");
