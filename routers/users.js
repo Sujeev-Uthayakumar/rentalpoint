@@ -56,7 +56,7 @@ router.post("/register", (req, res) => {
   if (
     req.body.fname &&
     req.body.lname &&
-    req.body.country &&
+    req.body.country !== "None" &&
     req.body.date &&
     req.body.email &&
     req.body.password &&
@@ -136,7 +136,7 @@ router.post("/seller", (req, res) => {
   if (
     req.body.fname &&
     req.body.lname &&
-    req.body.country &&
+    req.body.country !== "None" &&
     req.body.date &&
     req.body.email &&
     req.body.password &&
@@ -237,12 +237,11 @@ router.get("/account", (req, res) => {
 
 router.post("/account", (req, res) => {
   if (req.session.loggedin) {
-    console.log("test");
-    if (req.body.changeLocation) {
-      console.log("changed account");
+    console.log(req.body);
+    if (req.body.changeLocation && req.body.changeLocation !== "None") {
+      // connection().query()
       res.redirect("/account");
     } else {
-      console.log("no input");
       res.redirect("/account");
     }
   } else {
