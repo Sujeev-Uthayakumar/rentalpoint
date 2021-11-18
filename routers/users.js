@@ -217,16 +217,25 @@ router.get("/account", (req, res) => {
     const queries = [
       "SELECT fname, lname, country, email, DATE_FORMAT(birthdate, '%Y/%m/%d') AS birthdate  FROM accounts WHERE email=?",
       "SELECT isSeller FROM verified_accounts, accounts WHERE verified_accounts.user_id = accounts.id AND accounts.email = ?",
-      "SELECT * FROM listings WHERE host_id IN (SELECT user_id FROM verified_accounts,accounts WHERE accounts.email=? AND verified_accounts.user_id = accounts.id)",
+      "SELECT listing_id, host_id, DATE_FORMAT(datecreated, '%Y/%m/%d') AS datecreated, price, DATE_FORMAT(avaliable_start, '%Y/%m/%d') AS start, DATE_FORMAT(avaliable_end,'%Y/%m/%d') AS end, location FROM listings WHERE host_id IN (SELECT user_id FROM verified_accounts,accounts WHERE accounts.email=? AND verified_accounts.user_id = accounts.id)",
+      "SELECT DATE_FORMAT(rented_cars.pickup, '%Y/%m/%d') AS pickup, DATE_FORMAT(rented_cars.dropoff, '%Y/%m/%d') AS dropoff, listing_car.car_year, rented_cars.order_id, accounts.fname, accounts.lname, listings.price, listing_car.manufacturer, listing_car.model, listings.host_id FROM rented_cars JOIN accounts ON accounts.id = rented_cars.buyer_id JOIN listing_car ON listing_car.car_id = rented_cars.car_id JOIN listings ON listings.listing_id = rented_cars.listing_id WHERE rented_cars.buyer_id=?",
     ];
     connection().query(
       queries.join(";"),
-      [req.session.username, req.session.username, req.session.username],
+      [
+        req.session.username,
+        req.session.username,
+        req.session.username,
+        req.session.userid,
+      ],
       function (error, results, fields) {
+        console.log(results[2]);
         res.render("account", {
           loggedIn: req.session.loggedin,
           accountDetails: results[0][0],
           registeredSeller: true ? results[1].length > 0 : false,
+          orders: results[3],
+          listings: results[2],
         });
       }
     );
@@ -237,10 +246,14 @@ router.get("/account", (req, res) => {
 
 router.post("/account", (req, res) => {
   if (req.session.loggedin) {
-    console.log(req.body);
     if (req.body.changeLocation && req.body.changeLocation !== "None") {
-      // connection().query()
-      res.redirect("/account");
+      connection().query(
+        "UPDATE accounts SET country=? WHERE id=?",
+        [req.body.changeLocation, req.session.userid],
+        function (error, results, fields) {
+          res.redirect("/account");
+        }
+      );
     } else {
       res.redirect("/account");
     }
