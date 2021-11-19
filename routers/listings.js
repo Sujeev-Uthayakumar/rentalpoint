@@ -7,7 +7,6 @@ const connection = require("../helpers/database");
 router.use(express.json());
 
 router.get("/listings", (req, res) => {
-  console.log(req.session);
   if (req.session.loggedin) {
     const queries = [
       "SELECT country FROM accounts WHERE id = ?",
@@ -18,7 +17,6 @@ router.get("/listings", (req, res) => {
       queries.join(";"),
       [req.session.userid, req.session.location, req.session.username],
       function (error, results, fields) {
-        console.log(results);
         res.render("listings", {
           loggedIn: req.session.loggedin,
           results: results[1],
@@ -32,7 +30,7 @@ router.get("/listings", (req, res) => {
 });
 
 router.post("/listings", (req, res) => {
-  res.redirect("/listings");
+  console.log(req.body);
 });
 
 router.post("/search", (req, res) => {

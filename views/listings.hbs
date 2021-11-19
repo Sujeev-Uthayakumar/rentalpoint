@@ -9,7 +9,7 @@
   {{#if isSeller}}
   
   <div class="reveal" id="modal" data-reveal>
-<form>
+<form action="/listings" method="POST">
     <h3>Add a Listing</h3>
        <div class="row">
       <label class="columns small-6">Manufacturer</label>
@@ -28,8 +28,6 @@
         <input type="Number" name="year" placeholder="Year">
         </label>
       </div>
-      
-      
         <div class="columns small-6">
           <label>Location
             <select name="country">
@@ -43,32 +41,37 @@
               </select>
           </label>
         </div>
-      
-    </div>
-    <div class="row columns">
-      <label>Property Type
-        <select name="status" type="text">
-          <option>Any</option>
-          <option value="office">Office</option>
-          <option value="building">Building</option>
-        </select>
-      </label>
-    </div>
-    <div class="row columns">
-      <label>Location
-        <input type="text" name="location" placeholder="Any">
-      </label>
     </div>
     <div class="row">
-      <label class="columns small-12">Price</label>
       <div class="columns small-6">
-        <input type="number" min="0" name="min" placeholder="Min">
+        <label>Listing Start Date
+            <input type="date" placeholder="YYYY-MM-DD" name="datestart" >
+        </label>
       </div>
-      <div class="columns small-6">
-        <input type="number" min="0" name="max" placeholder="Max">
-      </div>
+        <div class="columns small-6">
+          <label>Listing End Date
+            <input type="date" placeholder="YYYY-MM-DD" name="dateend" >
+          </label>
+        </div>
     </div>
-    <button type="button" class="primary button expanded search-button">
+    <div class="row">
+      <div class="columns small-6">
+        <label>Seats
+            <input type="number" placeholder="Seats" name="seats" >
+        </label>
+      </div>
+        <div class="columns small-6">
+          <label>Condition (Max 10)
+            <input type="number" max="10" placeholder="Condition" name="condition" >
+          </label>
+        </div>
+    </div>
+    <div class="row columns">
+      <label>Price
+        <input type="number" name="price" placeholder="Price">
+      </label>
+    </div>
+    <button type="submit" class="primary button expanded search-button">
       Add Listing
     </button>
  </form>

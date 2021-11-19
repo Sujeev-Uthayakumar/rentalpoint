@@ -14,7 +14,10 @@
     >Account Details</a></li>
   <li class="tabs-title"><a href="#panel2c">Change Account Details</a></li>
   <li class="tabs-title"><a href="#panel3c">Orders</a></li>
-  {{#if registeredSeller}} <li class="tabs-title"><a href="#panel4c">Manage Listings</a></li> {{/if}}
+  {{#if registeredSeller}}  
+  <li class="tabs-title"><a href="#panel4c">Manage Listings</a></li>
+  <li class="tabs-title"><a href="#panel5c">Fulfilled Orders</a></li>
+  {{/if}}
   
 </ul>
 {{!-- First Panel --}}
@@ -163,8 +166,6 @@
   </div>
   
   <div class="tabs-panel" id="panel4c">
-    
-
   {{#if listings}}
   {{#each listings}}
     <div class="travel-feature-card">
@@ -225,4 +226,7 @@
 </div>
 {{/if}}
   </div>
+    <div class="tabs-panel" id="panel5c">
+      <p>Testing</p>
+    </div>
 </div>
