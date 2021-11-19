@@ -9,9 +9,70 @@
   {{#if isSeller}}
   
   <div class="reveal" id="modal" data-reveal>
-    <h1>Awesome. I Have It.</h1>
-    <p class="lead">Your couch. It is mine.</p>
-    <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+<form>
+    <h3>Add a Listing</h3>
+       <div class="row">
+      <label class="columns small-6">Manufacturer</label>
+       <label class="columns small-6">Model</label>
+      <div class="columns small-6">
+        <input type="text" name="manufacturer" placeholder="Manufacturer">
+      </div>
+     
+      <div class="columns small-6">
+        <input type="text" name="model" placeholder="Model">
+      </div>
+    </div>
+    <div class="row">
+      <div class="columns small-6">
+        <label>Year
+        <input type="Number" name="year" placeholder="Year">
+        </label>
+      </div>
+      
+      
+        <div class="columns small-6">
+          <label>Location
+            <select name="country">
+                <option value="None">None</option>
+                <option value="Canada">Canada</option>
+                <option value="United States">United States</option>
+                <option value="Mexico">Mexico</option>
+                <option value="United Kingdom">United Kingdom</option>
+                <option value="India">India</option>
+                <option value="China">China</option>
+              </select>
+          </label>
+        </div>
+      
+    </div>
+    <div class="row columns">
+      <label>Property Type
+        <select name="status" type="text">
+          <option>Any</option>
+          <option value="office">Office</option>
+          <option value="building">Building</option>
+        </select>
+      </label>
+    </div>
+    <div class="row columns">
+      <label>Location
+        <input type="text" name="location" placeholder="Any">
+      </label>
+    </div>
+    <div class="row">
+      <label class="columns small-12">Price</label>
+      <div class="columns small-6">
+        <input type="number" min="0" name="min" placeholder="Min">
+      </div>
+      <div class="columns small-6">
+        <input type="number" min="0" name="max" placeholder="Max">
+      </div>
+    </div>
+    <button type="button" class="primary button expanded search-button">
+      Add Listing
+    </button>
+ </form>
+
     <button class="close-button" data-close aria-label="Close modal" type="button">
         <span aria-hidden="true">&times;</span>
   </button>
