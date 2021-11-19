@@ -266,7 +266,7 @@ router.get("/account/:id", (req, res) => {
   console.log(req.params);
   if (req.session.loggedin) {
     connection().query(
-      "DELETE FROM listings WHERE listing_id=?",
+      "DELETE full_listings, listing_car FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id=?",
       [req.params.id],
       function (error, results, fields) {
         res.redirect("/account");
