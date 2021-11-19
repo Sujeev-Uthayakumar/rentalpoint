@@ -29,6 +29,7 @@ router.post("/login", (req, res) => {
           req.session.loggedin = true;
           req.session.username = req.body.username;
           req.session.userid = results[0].id;
+          req.session.location = results[0].country;
           res.redirect("/");
         } else {
           res.render("login", {

@@ -1,4 +1,18 @@
+
 {{#if results}}
+  <div class="callout large">
+    <div class="row column text-center">
+      <h1>Search - Rental Point</h1>
+      <p class="lead">These listings are based on your account location, for different options change your profile settings.</p>
+    </div>
+  </div>
+  {{#if isSeller}}
+  <div class="row">
+      <div class="small-4 medium-2 right-align columns">
+        <button name={{listing_id}} type="button" class="success button"><a style="color: inherit" href="/listing/{{listing_id}}"><i class="fas fa-plus"></i> Add Listing</a></button>
+    </div>
+  </div>
+  {{/if}}
   {{#each results}}
     <div class="row large-12 columns">
 <div class="travel-feature-card">

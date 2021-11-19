@@ -7,7 +7,27 @@ const connection = require("../helpers/database");
 router.use(express.json());
 
 router.get("/listings", (req, res) => {
-  res.render("carlistings", { loggedIn: req.session.loggedin });
+  console.log(req.session);
+  if (req.session.loggedin) {
+    const queries = [
+      "SELECT country FROM accounts WHERE id = ?",
+      "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.location=?",
+    ];
+    connection().query(
+      queries.join(";"),
+      [req.session.userid, req.session.location],
+      function (error, results, fields) {
+        console.log(results);
+        res.render("listings", {
+          loggedIn: req.session.loggedin,
+          results,
+          isSeller: true,
+        });
+      }
+    );
+  } else {
+    res.redirect("/login");
+  }
 });
 
 router.post("/search", (req, res) => {
@@ -22,4 +42,5 @@ router.post("/search", (req, res) => {
     }
   );
 });
+
 module.exports = router;
