@@ -248,6 +248,7 @@ router.get("/account", (req, res) => {
 router.post("/account", (req, res) => {
   if (req.session.loggedin) {
     if (req.body.changeLocation && req.body.changeLocation !== "None") {
+      req.session.location = req.body.changeLocation;
       connection().query(
         "UPDATE accounts SET country=? WHERE id=?",
         [req.body.changeLocation, req.session.userid],

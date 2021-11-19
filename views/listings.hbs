@@ -7,9 +7,19 @@
     </div>
   </div>
   {{#if isSeller}}
+  
+  <div class="reveal" id="modal" data-reveal>
+    <h1>Awesome. I Have It.</h1>
+    <p class="lead">Your couch. It is mine.</p>
+    <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
   <div class="row">
       <div class="small-4 medium-2 right-align columns">
-        <button name={{listing_id}} type="button" class="success button"><a style="color: inherit" href="/listing/{{listing_id}}"><i class="fas fa-plus"></i> Add Listing</a></button>
+        <button data-open="modal"type="button" class="success button"><a style="color: inherit"><i class="fas fa-plus"></i> Add Listing</a></button>
     </div>
   </div>
   {{/if}}

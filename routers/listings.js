@@ -12,22 +12,27 @@ router.get("/listings", (req, res) => {
     const queries = [
       "SELECT country FROM accounts WHERE id = ?",
       "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.location=?",
+      "SELECT isSeller FROM verified_accounts, accounts WHERE verified_accounts.user_id = accounts.id AND accounts.email = ?",
     ];
     connection().query(
       queries.join(";"),
-      [req.session.userid, req.session.location],
+      [req.session.userid, req.session.location, req.session.username],
       function (error, results, fields) {
         console.log(results);
         res.render("listings", {
           loggedIn: req.session.loggedin,
-          results,
-          isSeller: true,
+          results: results[1],
+          isSeller: true ? results[2].length > 0 : false,
         });
       }
     );
   } else {
     res.redirect("/login");
   }
+});
+
+router.post("/listings", (req, res) => {
+  res.redirect("/listings");
 });
 
 router.post("/search", (req, res) => {
