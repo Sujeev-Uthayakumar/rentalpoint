@@ -29,7 +29,13 @@ router.get("/listings", (req, res) => {
   }
 });
 
-router.post("/listings", (req, res) => {
+router.get("/listings/add", (req, res) => {
+  res.render("listings-add", {
+    loggedIn: req.session.loggedin,
+  });
+});
+
+router.post("/listings/add", (req, res) => {
   console.log(req.body);
 });
 

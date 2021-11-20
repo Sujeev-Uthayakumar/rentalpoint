@@ -1,4 +1,3 @@
-
 {{#if results}}
   <div class="callout large">
     <div class="row column text-center">
@@ -7,83 +6,9 @@
     </div>
   </div>
   {{#if isSeller}}
-  
-  <div class="reveal" id="modal" data-reveal>
-<form action="/listings" method="POST">
-    <h3>Add a Listing</h3>
-       <div class="row">
-      <label class="columns small-6">Manufacturer</label>
-       <label class="columns small-6">Model</label>
-      <div class="columns small-6">
-        <input type="text" name="manufacturer" placeholder="Manufacturer">
-      </div>
-     
-      <div class="columns small-6">
-        <input type="text" name="model" placeholder="Model">
-      </div>
-    </div>
-    <div class="row">
-      <div class="columns small-6">
-        <label>Year
-        <input type="Number" name="year" placeholder="Year">
-        </label>
-      </div>
-        <div class="columns small-6">
-          <label>Location
-            <select name="country">
-                <option value="None">None</option>
-                <option value="Canada">Canada</option>
-                <option value="United States">United States</option>
-                <option value="Mexico">Mexico</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="India">India</option>
-                <option value="China">China</option>
-              </select>
-          </label>
-        </div>
-    </div>
-    <div class="row">
-      <div class="columns small-6">
-        <label>Listing Start Date
-            <input type="date" placeholder="YYYY-MM-DD" name="datestart" >
-        </label>
-      </div>
-        <div class="columns small-6">
-          <label>Listing End Date
-            <input type="date" placeholder="YYYY-MM-DD" name="dateend" >
-          </label>
-        </div>
-    </div>
-    <div class="row">
-      <div class="columns small-6">
-        <label>Seats
-            <input type="number" placeholder="Seats" name="seats" >
-        </label>
-      </div>
-        <div class="columns small-6">
-          <label>Condition (Max 10)
-            <input type="number" max="10" placeholder="Condition" name="condition" >
-          </label>
-        </div>
-    </div>
-    <div class="row columns">
-      <label>Price
-        <input type="number" name="price" placeholder="Price">
-      </label>
-    </div>
-    <button type="submit" class="primary button expanded search-button">
-      Add Listing
-    </button>
- </form>
-
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-        <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-
   <div class="row">
       <div class="small-4 medium-2 right-align columns">
-        <button data-open="modal"type="button" class="success button"><a style="color: inherit"><i class="fas fa-plus"></i> Add Listing</a></button>
+        <button data-open="modal"type="button" class="success button"><a style="color: inherit" href="/listings/add"><i class="fas fa-plus"></i> Add Listing</a></button>
     </div>
   </div>
   {{/if}}
