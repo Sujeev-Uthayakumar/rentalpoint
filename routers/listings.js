@@ -1,5 +1,7 @@
 const express = require("express");
 const mysql = require("mysql2");
+const relativeTime = require("dayjs/plugin/relativeTime");
+const dayjs = require("dayjs");
 
 const router = express.Router();
 const connection = require("../helpers/database");
@@ -36,7 +38,36 @@ router.get("/listings/add", (req, res) => {
 });
 
 router.post("/listings/add", (req, res) => {
-  console.log(req.body);
+  if (
+    req.body.manufacturer &&
+    req.body.model &&
+    req.body.country !== "None" &&
+    req.body.seats &&
+    req.body.condition &&
+    req.body.datestart &&
+    req.body.dateend &&
+    req.body.price
+  ) {
+    const start = dayjs(req.body.datestart);
+    const end = dayjs(req.body.dateend);
+    const now = dayjs();
+    if (start.diff(end, "day", true) >= 0) {
+      res.render("listings-add", {
+        errorMessage:
+          "The end date must be set to a later date, a date later than the start date",
+      });
+    } else if (now.diff(start, "day", true) > 0) {
+      res.render("listings-add", {
+        errorMessage:
+          "The start date must at least start after today, so begin your listing starting tomorrow",
+      });
+    }
+  } else {
+    res.render("listings-add", {
+      loggedIn: req.session.loggedin,
+      errorMessage: "All input fields must be filled in",
+    });
+  }
 });
 
 router.post("/search", (req, res) => {
