@@ -220,6 +220,7 @@ router.get("/account", (req, res) => {
       "SELECT isSeller FROM verified_accounts, accounts WHERE verified_accounts.user_id = accounts.id AND accounts.email = ?",
       "SELECT listing_id, host_id, DATE_FORMAT(datecreated, '%Y/%m/%d') AS datecreated, price, DATE_FORMAT(avaliable_start, '%Y/%m/%d') AS start, DATE_FORMAT(avaliable_end,'%Y/%m/%d') AS end, location FROM listings WHERE host_id IN (SELECT user_id FROM verified_accounts,accounts WHERE accounts.email=? AND verified_accounts.user_id = accounts.id)",
       "SELECT DATE_FORMAT(rented_cars.pickup, '%Y/%m/%d') AS pickup, DATE_FORMAT(rented_cars.dropoff, '%Y/%m/%d') AS dropoff, listing_car.car_year, rented_cars.order_id, accounts.fname, accounts.lname, listings.price, listing_car.manufacturer, listing_car.model, listings.host_id FROM rented_cars JOIN accounts ON accounts.id = rented_cars.buyer_id JOIN listing_car ON listing_car.car_id = rented_cars.car_id JOIN listings ON listings.listing_id = rented_cars.listing_id WHERE rented_cars.buyer_id=?",
+      "SELECT * FROM rented_cars AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON full_listings.buyer_id = accounts.id WHERE full_listings.listing_id IN(SELECT listing_id FROM listings WHERE listings.host_id = ?)",
     ];
     connection().query(
       queries.join(";"),
@@ -228,15 +229,17 @@ router.get("/account", (req, res) => {
         req.session.username,
         req.session.username,
         req.session.userid,
+        req.session.userid,
       ],
       function (error, results, fields) {
-        console.log(req.body);
+        console.log(results[4]);
         res.render("account", {
           loggedIn: req.session.loggedin,
           accountDetails: results[0][0],
           registeredSeller: true ? results[1].length > 0 : false,
           orders: results[3],
           listings: results[2],
+          fulfilled: results[4],
         });
       }
     );
