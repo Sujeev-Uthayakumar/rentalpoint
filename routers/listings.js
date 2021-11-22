@@ -38,35 +38,90 @@ router.get("/listings/add", (req, res) => {
 });
 
 router.post("/listings/add", (req, res) => {
-  if (
-    req.body.manufacturer &&
-    req.body.model &&
-    req.body.country !== "None" &&
-    req.body.seats &&
-    req.body.condition &&
-    req.body.datestart &&
-    req.body.dateend &&
-    req.body.price
-  ) {
-    const start = dayjs(req.body.datestart);
-    const end = dayjs(req.body.dateend);
-    const now = dayjs();
-    if (start.diff(end, "day", true) >= 0) {
+  if (req.session.loggedin) {
+    if (
+      req.body.manufacturer &&
+      req.body.model &&
+      req.body.country !== "None" &&
+      req.body.seats &&
+      req.body.condition &&
+      req.body.datestart &&
+      req.body.dateend &&
+      req.body.price &&
+      req.body.year
+    ) {
+      const start = dayjs(req.body.datestart);
+      const end = dayjs(req.body.dateend);
+      const now = dayjs();
+      if (start.diff(end, "day", true) >= 0) {
+        res.render("listings-add", {
+          errorMessage:
+            "The end date must be set to a later date, a date later than the start date",
+          loggedIn: req.session.loggedin,
+        });
+      } else if (now.diff(start, "day", true) > 0) {
+        res.render("listings-add", {
+          errorMessage:
+            "The start date must at least start after today, so begin your listing starting tomorrow",
+          loggedIn: req.session.loggedin,
+        });
+      } else if (req.body.condition > 10 && req.body.condition < 1) {
+        res.render("listings-add", {
+          errorMessage: "The condition input field is not an acceptable value",
+          loggedIn: req.session.loggedin,
+        });
+      } else if (req.body.seats > 10 && req.body.seats < 1) {
+        res.render("listings-add", {
+          errorMessage: "The car capacity should qualify as a consumer vehicle",
+          loggedIn: req.session.loggedin,
+        });
+      } else if (req.body.price < 0) {
+        res.render("listings-add", {
+          errorMessage: "The price must be an acceptable value",
+          loggedIn: req.session.loggedin,
+        });
+      } else if (req.body.year < 2010) {
+        res.render("listings-add", {
+          errorMessage: "The car year must be at least from 2010",
+          loggedIn: req.session.loggedin,
+        });
+      } else {
+        connection().query(
+          "INSERT INTO listings(host_id, price, avaliable_start, avaliable_end, location) VALUES(?, ?, ?, ?, ?)",
+          [
+            req.session.userid,
+            req.body.price,
+            req.body.datestart,
+            req.body.dateend,
+            req.body.country,
+          ],
+          function (error, results, fields) {
+            res.redirect("/listings");
+            connection().query(
+              "INSERT INTO listing_car(listing_id, manufacturer, model, car_year, seats, state) VALUES(?, ?, ?, ?, ?, ?)",
+              [
+                results.insertId,
+                req.body.manufacturer,
+                req.body.model,
+                req.body.year,
+                req.body.seats,
+                req.body.condition,
+              ],
+              function (error, results, fields) {
+                res.redirect("/listings");
+              }
+            );
+          }
+        );
+      }
+    } else {
       res.render("listings-add", {
-        errorMessage:
-          "The end date must be set to a later date, a date later than the start date",
-      });
-    } else if (now.diff(start, "day", true) > 0) {
-      res.render("listings-add", {
-        errorMessage:
-          "The start date must at least start after today, so begin your listing starting tomorrow",
+        loggedIn: req.session.loggedin,
+        errorMessage: "All input fields must be filled in",
       });
     }
   } else {
-    res.render("listings-add", {
-      loggedIn: req.session.loggedin,
-      errorMessage: "All input fields must be filled in",
-    });
+    res.redirect("/login");
   }
 });
 
