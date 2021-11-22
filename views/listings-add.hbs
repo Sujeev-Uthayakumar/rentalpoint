@@ -9,22 +9,11 @@
   <h5>{{{errorMessage}}}</h5>
   <a href="#">Please make the necessary changes</a>
 </div>
-{{/if}}
-{{#if successMessage includeZero=true}}
-<div class="callout success">
-  <h5>{{{successMessage}}}</h5>
-  <a href="#">Your listing can be viewed below.</a>
-</div>
-{{/if}}
-
-
-
-
-    
+{{/if}}    
       <form action="/listings/add" method="POST" autocomplete="off"> 
-      <fieldset class="fieldset small-8 small-centered columns">
       <div class="row">
-      <legend>Vehicle Information</legend>
+        <fieldset class="fieldset small-8 small-centered columns">
+        <legend>Vehicle Information</legend>
       <div class="medium-6 columns">
         <label>Manufacturer
           <input type="text" placeholder="Manufacturer" name="manufacturer"  />
@@ -35,9 +24,7 @@
           <input type="number" placeholder="Car Year" name="year" />
         </label>
       </div>
-      </div>
-        <div class="row">
-          <div class="medium-6 columns">
+      <div class="medium-6 columns">
         <label>Model
           <input type="text" placeholder="Model" name="model" />
         </label>
@@ -47,25 +34,24 @@
           <input type="number" placeholder="Seats" name="seats"  />
         </label>
     </div>
-    </div>
     <div class="medium-6 columns">
         <label>Condition (out of 10)
           <input type="number" placeholder="Condition" name="condition" />
         </label>
     </div>
 
-            <div class="medium-6 columns">
-            <label>Location
-              <select name="country">
-                <option value="None">None</option>
-                <option value="Canada">Canada</option>
-                <option value="United States">United States</option>
-                <option value="Mexico">Mexico</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="India">India</option>
-                <option value="China">China</option>
-              </select>
-            </label>
+      <div class="medium-6 columns">
+        <label>Location
+            <select name="country">
+              <option value="None">None</option>
+              <option value="Canada">Canada</option>
+              <option value="United States">United States</option>
+              <option value="Mexico">Mexico</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="India">India</option>
+              <option value="China">China</option>
+            </select>
+          </label>
       </div>
       </fieldset>
       </div>
