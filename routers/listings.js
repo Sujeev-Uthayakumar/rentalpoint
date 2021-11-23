@@ -142,11 +142,18 @@ router.post("/search", (req, res) => {
 router.get("/listings/:id", (req, res) => {
   const queries = [
     "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id = ?",
-    "",
+    "SELECT pickup, dropoff FROM rented_cars WHERE rented_cars.listing_id = ?",
   ];
-  res.render("product", {
-    loggedIn: req.session.loggedin,
-  });
+  connection().query(
+    queries.join(";"),
+    [req.params.id, req.params.id],
+    function (error, results, fields) {
+      console.log(results);
+      res.render("product", {
+        loggedIn: req.session.loggedin,
+      });
+    }
+  );
 });
 
 module.exports = router;
