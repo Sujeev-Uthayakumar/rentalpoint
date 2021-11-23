@@ -148,12 +148,13 @@ router.get("/listings/:id", (req, res) => {
       queries.join(";"),
       [req.params.id, req.params.id, req.params.id],
       function (error, results, fields) {
-        console.log(results[2]);
+        console.log(results[1].price);
         res.render("product", {
           loggedIn: req.session.loggedin,
           endDate: results[0][0].end_date,
           startDate: results[0][0].start_date,
           disable: JSON.stringify(results[2]),
+          results: results[1][0],
         });
       }
     );
@@ -162,6 +163,23 @@ router.get("/listings/:id", (req, res) => {
   }
 });
 
-router.post("/listings/:id", (req, res) => {});
+router.post("/listings/:id", (req, res) => {
+  if (req.session.loggedin) {
+    if (req.body.calendar) {
+      console.log(req.params);
+      console.log(req.body.calendar);
+      res.render("checkout");
+    } else {
+      res.redirect("back");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+router.get("/listings/:id/checkout", (req, res) => {
+  res.render("checkout");
+  console.log(req.params);
+});
 
 module.exports = router;

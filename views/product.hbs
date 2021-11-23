@@ -1,3 +1,9 @@
+{{#if errorMessage includeZero=true}}
+<div class="callout alert">
+  <h5>{{{errorMessage}}}</h5>
+  <a href="#">Please make the necessary changes</a>
+</div>
+{{/if}}
 <div class="row align-center">
   <div class="work-feature-block row">
     <div class="columns medium-6">
@@ -16,23 +22,30 @@
         </div>
         <div class="column small-12 large-12">
           <h6 class="product-color-title">Size</h6>
-          <form class="product-option-selection">
+          <form
+            action="/listings/{{results.listing_id}}"
+            method="POST"
+            class="product-option-selection"
+          >
             <input
               id="calendar"
+              name="calendar"
               class="form-control"
               placeholder="Select DateTime"
+              required
             />
-          </form>
+
         </div>
       </div>
       <div class="product-details-add-to-cart">
         <p><span class="in-stock">In Stock</span>
           <span class="dim-text">(Only 3 left in Stock)</span></p>
         <hr />
-        <p class="price">$19.99</p>
+        <p class="price">${{results.price}}/Day</p>
         <p> <span>Qty:</span> <input class="qty" type="text" value="1" /> </p>
-        <button class="button expanded">Confirm Order</button>
+        <button type="submit" class="button expanded">Proceed to Checkout</button>
       </div>
     </div>
   </div>
 </div>
+</form>
