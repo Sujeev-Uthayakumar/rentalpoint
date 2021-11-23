@@ -1,10 +1,10 @@
 const express = require("express");
 const mysql = require("mysql2");
-const relativeTime = require("dayjs/plugin/relativeTime");
 const dayjs = require("dayjs");
 
 const router = express.Router();
 const connection = require("../helpers/database");
+const calendar = require("../helpers/calendar");
 
 router.use(express.json());
 
@@ -19,6 +19,7 @@ router.get("/listings", (req, res) => {
       queries.join(";"),
       [req.session.userid, req.session.location, req.session.username],
       function (error, results, fields) {
+        console.log(results[1]);
         res.render("listings", {
           loggedIn: req.session.loggedin,
           results: results[1],
@@ -136,6 +137,16 @@ router.post("/search", (req, res) => {
       });
     }
   );
+});
+
+router.get("/listings/:id", (req, res) => {
+  const queries = [
+    "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id = ?",
+    "",
+  ];
+  res.render("product", {
+    loggedIn: req.session.loggedin,
+  });
 });
 
 module.exports = router;
