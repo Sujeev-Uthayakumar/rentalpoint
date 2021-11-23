@@ -56,13 +56,14 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
       const config = {
-        dateFormat: "Y-m-d",
-        {{!-- minDate: startDate,
-        maxDate: endDate,
-        disable: disabledDate, --}}
-        mode: "range",
+        "dateFormat": "Y-m-d",
+        "maxDate": "{{endDate}}",
+         "minDate": "{{startDate}}",
+         "disable": {{{disable}}},
+        "mode": "range",
       };
       flatpickr("#calendar",config);
+      console.log(config)
     </script>
   </body>
 </html>

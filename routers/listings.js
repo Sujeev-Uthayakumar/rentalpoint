@@ -1,11 +1,9 @@
 const express = require("express");
 const mysql = require("mysql2");
-const flatpickr = require("flatpickr");
 const dayjs = require("dayjs");
 
 const router = express.Router();
 const connection = require("../helpers/database");
-const calendar = require("../helpers/calendar");
 
 router.use(express.json());
 
@@ -20,7 +18,6 @@ router.get("/listings", (req, res) => {
       queries.join(";"),
       [req.session.userid, req.session.location, req.session.username],
       function (error, results, fields) {
-        console.log(results[1]);
         res.render("listings", {
           loggedIn: req.session.loggedin,
           results: results[1],
@@ -143,17 +140,20 @@ router.post("/search", (req, res) => {
 router.get("/listings/:id", (req, res) => {
   if (req.session.loggedin) {
     const queries = [
+      "SELECT DATE_FORMAT(datecreated, '%Y-%m-%d') AS date_created, DATE_FORMAT(avaliable_start, '%Y-%m-%d') AS start_date, DATE_FORMAT(avaliable_end, '%Y-%m-%d') AS end_date FROM listings WHERE listing_id = ?",
       "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id = ?",
-      "SELECT pickup, dropoff FROM rented_cars WHERE rented_cars.listing_id = ?",
+      "SELECT DATE_FORMAT(pickup, '%Y-%m-%d') AS 'from', DATE_FORMAT(dropoff, '%Y-%m-%d') AS 'to' FROM rented_cars WHERE rented_cars.listing_id = ?",
     ];
     connection().query(
       queries.join(";"),
-      [req.params.id, req.params.id],
+      [req.params.id, req.params.id, req.params.id],
       function (error, results, fields) {
-        console.log(results);
+        console.log(results[2]);
         res.render("product", {
           loggedIn: req.session.loggedin,
-          maxDate: "15.12.2017",
+          endDate: results[0][0].end_date,
+          startDate: results[0][0].start_date,
+          disable: JSON.stringify(results[2]),
         });
       }
     );
@@ -161,5 +161,7 @@ router.get("/listings/:id", (req, res) => {
     res.redirect("/login");
   }
 });
+
+router.post("/listings/:id", (req, res) => {});
 
 module.exports = router;
