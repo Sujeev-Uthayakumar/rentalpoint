@@ -1,5 +1,6 @@
 const express = require("express");
 const mysql = require("mysql2");
+const flatpickr = require("flatpickr");
 const dayjs = require("dayjs");
 
 const router = express.Router();
@@ -140,20 +141,25 @@ router.post("/search", (req, res) => {
 });
 
 router.get("/listings/:id", (req, res) => {
-  const queries = [
-    "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id = ?",
-    "SELECT pickup, dropoff FROM rented_cars WHERE rented_cars.listing_id = ?",
-  ];
-  connection().query(
-    queries.join(";"),
-    [req.params.id, req.params.id],
-    function (error, results, fields) {
-      console.log(results);
-      res.render("product", {
-        loggedIn: req.session.loggedin,
-      });
-    }
-  );
+  if (req.session.loggedin) {
+    const queries = [
+      "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id = ?",
+      "SELECT pickup, dropoff FROM rented_cars WHERE rented_cars.listing_id = ?",
+    ];
+    connection().query(
+      queries.join(";"),
+      [req.params.id, req.params.id],
+      function (error, results, fields) {
+        console.log(results);
+        res.render("product", {
+          loggedIn: req.session.loggedin,
+          maxDate: "15.12.2017",
+        });
+      }
+    );
+  } else {
+    res.redirect("/login");
+  }
 });
 
 module.exports = router;
