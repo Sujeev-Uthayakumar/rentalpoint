@@ -166,11 +166,26 @@ router.get("/listings/:id", (req, res) => {
 router.post("/listings/:id", (req, res) => {
   if (req.session.loggedin) {
     if (req.body.calendar) {
-      req.body.calendar.split(" to ");
-      res.render("checkout", {
-        listing_id: req.params.id,
-        days: test,
-      });
+      connection().query(
+        "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id = ?",
+        [req.params.id],
+        function (error, results, fields) {
+          const dates = req.body.calendar.split(" to ");
+          console.log(
+            dates.length > 1
+              ? 1 + dayjs(dates[1]).diff(dayjs(dates[0]), "day")
+              : 1
+          );
+          res.render("checkout", {
+            listing_id: req.params.id,
+            days:
+              dates.length > 1
+                ? 1 + dayjs(dates[1]).diff(dayjs(dates[0]), "day")
+                : 1,
+            results: results[0],
+          });
+        }
+      );
     } else {
       res.redirect("back");
     }
