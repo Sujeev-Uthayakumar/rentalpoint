@@ -1,12 +1,14 @@
 const express = require("express");
 const session = require("express-session");
-const relativeTime = require("dayjs/plugin/relativeTime");
 const dayjs = require("dayjs");
 
 const connection = require("../helpers/database");
 const { default: flatpickr } = require("flatpickr");
+const relativeTime = require("dayjs/plugin/relativeTime");
+
 const router = express.Router();
 dayjs.extend(relativeTime);
+
 router.use(
   session({
     secret: "secret",

@@ -4,6 +4,9 @@ const dayjs = require("dayjs");
 
 const router = express.Router();
 const connection = require("../helpers/database");
+const isSameOrBefore = require("dayjs/plugin/isSameOrBefore");
+
+dayjs.extend(isSameOrBefore);
 
 router.use(express.json());
 
@@ -149,11 +152,16 @@ router.get("/listings/:id", (req, res) => {
       queries.join(";"),
       [req.params.id, req.params.id, req.params.id],
       function (error, results, fields) {
-        console.log(results[1].price);
+        console.log(results[1]);
+        const currentDate = dayjs();
         res.render("product", {
           loggedIn: req.session.loggedin,
           endDate: results[0][0].end_date,
           startDate: results[0][0].start_date,
+          isAvaliable: dayjs(results[0][0].end_date).isSameOrBefore(
+            currentDate,
+            "day"
+          ),
           disable: JSON.stringify(results[2]),
           results: results[1][0],
         });
