@@ -49,7 +49,7 @@
       </div>
 
       <div class="small-12 medium-3 columns travel-feature-card-price">
-          <button type="button" class="alert button"><i class="fas fa-minus"></i> Delete Account</button>
+          {{!-- <button type="button" class="alert button"><i class="fas fa-minus"></i> Delete Account</button> --}}
       </div>
     </div> 
   </div>
@@ -116,22 +116,23 @@
   </div>
 
   <div class="travel-feature-card-details">
-    <h6 class="travel-feature-card-date-range">{{pickup}} - {{dropoff}}</h6>
+    <h6 class="travel-feature-card-date-range">Order Date: {{datecreated}}</h6>
     <div class="row">
       <div class="small-12 medium-9 columns travel-feature-card-content">
         <div class="row">
           <div class="small-8 medium-10 columns">
             <h6 class="travel-feature-card-title">{{manufacturer}} {{model}} {{car_year}}</h6>
-            <p>Host:</p>
-            <p>Host Email: </p>
+            <p>Host: {{fname}} {{lname}}</p>
+            <p>Host Email: {{email}}</p>
+            <p>Location: {{location}}</p>
+            <p>Order Duration: {{pickup}} - {{dropoff}}</p>
           </div>
         </div> 
       </div>
 
       <div class="small-12 medium-3 columns travel-feature-card-price">
-        <h6>{{price}}</h6>
-        <p class="travel-feature-card-price-subtext">/ Day</p>
-        <p class="travel-feature-card-price-subtext">Total: </p>
+        <h6>Total: ${{total}}</h6>
+        <p class="travel-feature-card-price-subtext">${{price}} / Day</p>
       </div>
     </div> 
   </div>
@@ -178,15 +179,16 @@
   </div>
 
   <div class="travel-feature-card-details">
-    <h6 class="travel-feature-card-date-range">Avaliability: {{start}} - {{end}}</h6>
+    <h6 class="travel-feature-card-date-range">Date Posted: {{datecreated}}</h6>
     <div class="row">
       <div class="small-12 medium-9 columns travel-feature-card-content">
         <div class="row">
           <div class="small-8 medium-10 columns">
             <h6 class="travel-feature-card-title">{{manufacturer}} {{model}} {{car_year}}</h6>
-            <p>Date Created: {{datecreated}} <br>
-            Vehicle: <br>
-            Location: </p>
+            <p>Avaliability: {{start}} - {{end}} <br>
+            Condition: {{state}} / 10<br>
+            Price / Day: ${{price}}<br>
+            Location: {{location}}</p>
           </div>
         </div> 
       </div>
@@ -245,9 +247,9 @@
         <div class="row">
           <div class="small-8 medium-10 columns">
             <h6 class="travel-feature-card-title">{{manufacturer}} {{model}} {{car_year}}</h6>
-            <p>Renter: {{fname}} {{lname}} <br>
+            <p>Purchase Date: {{purchaseDate}} <br>
+            Renter: {{fname}} {{lname}} <br>
             Renter Email: {{email}} <br>
-            Vehicle: {{manufacturer}} {{model}} {{car_year}}<br>
             Vehicle Condition: {{state}}/10<br>
             Location: {{location}}</p>
           </div>

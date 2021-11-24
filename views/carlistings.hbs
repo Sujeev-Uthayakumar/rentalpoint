@@ -1,4 +1,11 @@
 {{#if results}}
+  <div class="callout large">
+    <div class="row column text-center">
+      <h1>Quick Search - Rental Point</h1>
+      <p class="lead">These listings are based on your search criteria, login in to be able to make orders</p>
+    </div>
+  </div>
+    <div class="tabs-panel is-active" id="panel1c">
   {{#each results}}
     <div class="row large-12 columns">
 <div class="travel-feature-card">
@@ -40,8 +47,8 @@
   </div>
 </div>
     </div>
-
   {{/each}}
+  </div>
 {{else}}
   <div class="callout large">
     <div class="row column text-center">

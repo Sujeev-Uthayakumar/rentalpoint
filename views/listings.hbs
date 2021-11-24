@@ -12,8 +12,9 @@
     </div>
   </div>
   {{/if}}
+    <div class="tabs-panel is-active" id="panel1c">
   {{#each results}}
-  <a href="/listings/{{listing_id}}">
+<a href="/listings/{{listing_id}}">
 <div class="row large-12 columns" >
  <div class="travel-feature-card">
   <div class="travel-feature-card-header{{#if type}} icon {{type}}-icon{{/if}}">
@@ -53,9 +54,11 @@
     </div> 
   </div>
 </div>
-    </div>
+</div>
+
 </a>
   {{/each}}
+</div>
 {{else}}
   <div class="callout large">
     <div class="row column text-center">
