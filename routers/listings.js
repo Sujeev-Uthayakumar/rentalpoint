@@ -166,9 +166,11 @@ router.get("/listings/:id", (req, res) => {
 router.post("/listings/:id", (req, res) => {
   if (req.session.loggedin) {
     if (req.body.calendar) {
-      console.log(req.params);
-      console.log(req.body.calendar);
-      res.render("checkout");
+      req.body.calendar.split(" to ");
+      res.render("checkout", {
+        listing_id: req.params.id,
+        days: test,
+      });
     } else {
       res.redirect("back");
     }
@@ -177,9 +179,8 @@ router.post("/listings/:id", (req, res) => {
   }
 });
 
-router.get("/listings/:id/checkout", (req, res) => {
-  res.render("checkout");
-  console.log(req.params);
+router.post("/listings/:id/checkout", (req, res) => {
+  res.redirect("/account");
 });
 
 module.exports = router;
