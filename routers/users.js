@@ -3,6 +3,7 @@ const session = require("express-session");
 const dayjs = require("dayjs");
 
 const connection = require("../helpers/database");
+const capitalize = require("../helpers/capitalize");
 const { default: flatpickr } = require("flatpickr");
 const relativeTime = require("dayjs/plugin/relativeTime");
 
@@ -109,8 +110,8 @@ router.post("/register", (req, res) => {
           connection().query(
             "INSERT INTO accounts(fname, lname, email, country, birthdate, password) VALUES(?,?,?,?,?,?)",
             [
-              req.body.fname,
-              req.body.lname,
+              capitalize(req.body.fname),
+              capitalize(req.body.lname),
               req.body.email,
               req.body.country,
               req.body.date,
@@ -194,8 +195,8 @@ router.post("/seller", (req, res) => {
           connection().query(
             "INSERT INTO accounts(fname, lname, email, country, birthdate, password) VALUES(?,?,?,?,?,?)",
             [
-              req.body.fname,
-              req.body.lname,
+              capitalize(req.body.fname),
+              capitalize(req.body.lname),
               req.body.email,
               req.body.country,
               req.body.date,

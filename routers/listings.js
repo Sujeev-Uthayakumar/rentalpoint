@@ -5,6 +5,7 @@ const dayjs = require("dayjs");
 const router = express.Router();
 const connection = require("../helpers/database");
 const isSameOrBefore = require("dayjs/plugin/isSameOrBefore");
+const capitilize = require("../helpers/capitalize");
 
 dayjs.extend(isSameOrBefore);
 
@@ -21,7 +22,6 @@ router.get("/listings", (req, res) => {
       queries.join(";"),
       [req.session.userid, req.session.location, req.session.username],
       function (error, results, fields) {
-        console.log(results[1]);
         res.render("listings", {
           loggedIn: req.session.loggedin,
           results: results[1],
@@ -104,8 +104,8 @@ router.post("/listings/add", (req, res) => {
               "INSERT INTO listing_car(listing_id, manufacturer, model, car_year, seats, state) VALUES(?, ?, ?, ?, ?, ?)",
               [
                 results.insertId,
-                req.body.manufacturer,
-                req.body.model,
+                capitilize(req.body.manufacturer),
+                capitilize(req.body.model),
                 req.body.year,
                 req.body.seats,
                 req.body.condition,
@@ -145,14 +145,13 @@ router.get("/listings/:id", (req, res) => {
   if (req.session.loggedin) {
     const queries = [
       "SELECT DATE_FORMAT(datecreated, '%Y-%m-%d') AS date_created, DATE_FORMAT(avaliable_start, '%Y-%m-%d') AS start_date, DATE_FORMAT(avaliable_end, '%Y-%m-%d') AS end_date FROM listings WHERE listing_id = ?",
-      "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id = ?",
+      "SELECT full_listings.listing_id, DATE_FORMAT(full_listings.datecreated, '%Y-%m-%d') AS datecreated, accounts.email, accounts.fname, accounts.lname, full_listings.price, full_listings.location, listing_car.manufacturer, listing_car.model, listing_car.car_year, listing_car.state, listing_car.seats FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON accounts.id = full_listings.host_id WHERE full_listings.listing_id = ?",
       "SELECT DATE_FORMAT(pickup, '%Y-%m-%d') AS 'from', DATE_FORMAT(dropoff, '%Y-%m-%d') AS 'to' FROM rented_cars WHERE rented_cars.listing_id = ?",
     ];
     connection().query(
       queries.join(";"),
       [req.params.id, req.params.id, req.params.id],
       function (error, results, fields) {
-        console.log(results[1]);
         const currentDate = dayjs();
         res.render("product", {
           loggedIn: req.session.loggedin,
@@ -180,7 +179,7 @@ router.post("/listings/:id", (req, res, next) => {
         [req.params.id],
         function (error, results, fields) {
           const dates = req.body.calendar.split(" to ");
-
+          console.log(results);
           const numberDays =
             dates.length > 1
               ? 1 + dayjs(dates[1]).diff(dayjs(dates[0]), "day")
@@ -229,7 +228,6 @@ router.post("/listings/:id/checkout", (req, res, next) => {
         ],
         function (error, results, fields) {
           if (error) {
-            console.log(error);
             res.render("about", {
               errorMessage:
                 "There was a problem with your order, try again later",
