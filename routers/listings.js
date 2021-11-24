@@ -11,13 +11,14 @@ router.get("/listings", (req, res) => {
   if (req.session.loggedin) {
     const queries = [
       "SELECT country FROM accounts WHERE id = ?",
-      "SELECT * FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.location=?",
+      "SELECT full_listings.listing_id, full_listings.location, DATE_FORMAT(full_listings.avaliable_start, '%Y/%m/%d') AS avaliable_start,DATE_FORMAT(full_listings.avaliable_end, '%Y/%m/%d') AS avaliable_end, listing_car.manufacturer, listing_car.model, listing_car.car_year, accounts.fname, accounts.lname, DATE_FORMAT(full_listings.datecreated, '%Y/%m/%d') AS datecreated, listing_car.seats, listing_car.state, full_listings.price FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON full_listings.host_id = accounts.id WHERE full_listings.location=?",
       "SELECT isSeller FROM verified_accounts, accounts WHERE verified_accounts.user_id = accounts.id AND accounts.email = ?",
     ];
     connection().query(
       queries.join(";"),
       [req.session.userid, req.session.location, req.session.username],
       function (error, results, fields) {
+        console.log(results[1]);
         res.render("listings", {
           loggedIn: req.session.loggedin,
           results: results[1],
