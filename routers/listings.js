@@ -163,7 +163,7 @@ router.get("/listings/:id", (req, res) => {
   }
 });
 
-router.post("/listings/:id", (req, res) => {
+router.post("/listings/:id", (req, res, next) => {
   if (req.session.loggedin) {
     if (req.body.calendar) {
       connection().query(
@@ -171,19 +171,29 @@ router.post("/listings/:id", (req, res) => {
         [req.params.id],
         function (error, results, fields) {
           const dates = req.body.calendar.split(" to ");
-          console.log(
+
+          const numberDays =
             dates.length > 1
               ? 1 + dayjs(dates[1]).diff(dayjs(dates[0]), "day")
-              : 1
-          );
+              : 1;
+
           res.render("checkout", {
             listing_id: req.params.id,
+            from: dates[0],
+            to: dates[1],
             days:
               dates.length > 1
                 ? 1 + dayjs(dates[1]).diff(dayjs(dates[0]), "day")
                 : 1,
             results: results[0],
+            loggedIn: req.session.loggedin,
+            price: (numberDays * results[0].price).toFixed(2),
           });
+          req.session.fromDate = dates[0];
+          req.session.toDate = dates[1] ? dates[1] : dates[0];
+          req.session.price = numberDays * results[0].price;
+          req.session.locationListing = results[0].location;
+          req.session.carId = results[0].car_id;
         }
       );
     } else {
@@ -194,8 +204,51 @@ router.post("/listings/:id", (req, res) => {
   }
 });
 
-router.post("/listings/:id/checkout", (req, res) => {
-  res.redirect("/account");
+router.post("/listings/:id/checkout", (req, res, next) => {
+  if (req.session.loggedin) {
+    if (req.session.carId && req.params.id) {
+      connection().query(
+        "INSERT INTO rented_cars(listing_id, car_id, buyer_id, pickup, dropoff, location, price) VALUES(?, ?, ?, ?, ?, ?, ?)",
+        [
+          req.params.id,
+          req.session.carId,
+          req.session.userid,
+          req.session.fromDate,
+          req.session.toDate,
+          req.session.locationListing,
+          req.session.price,
+        ],
+        function (error, results, fields) {
+          if (error) {
+            console.log(error);
+            res.render("about", {
+              errorMessage:
+                "There was a problem with your order, try again later",
+              loggedIn: req.session.loggedin,
+            });
+          } else {
+            req.params.id = null;
+            req.session.carId = null;
+            req.session.fromDate = null;
+            req.session.toDate = null;
+            req.session.locationListing = null;
+            req.session.price = null;
+            res.render("about", {
+              successMessage: "Your order has been successfully made",
+              loggedIn: req.session.loggedin,
+            });
+          }
+        }
+      );
+    } else {
+      res.render("about", {
+        errorMessage: "There was a problem with your order, try again later",
+        loggedIn: req.session.loggedin,
+      });
+    }
+  } else {
+    res.redirect("/login");
+  }
 });
 
 module.exports = router;

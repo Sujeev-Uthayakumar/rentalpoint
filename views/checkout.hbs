@@ -18,16 +18,17 @@
     <div class="checkout-summary-details">
       <div class="left">
         <p><strong>Per Day:</strong></p>
-        <p><strong>Number of Days: </strong>{{days}}</p>
-        <p><strong>Total:</strong></p>
+        <p><strong>Number of Days: </strong></p>
+        <p><strong>Total: </strong></p>
       </div>
       <div class="right">
-        <p>$10.99</p>
-        <p>$12.99</p>
+        <p>${{results.price}}</p>
+        <p>{{days}}</p>
+        <p>${{price}}</p>
       </div>
     </div>
     <button type="submit" class="button expanded">Submit Order</button>
-    <button class="button">Go Back</button>
+    <button class="button"><a style="text-decoration:none" href="/listings">Back to Listings</a></button>
   </div>
   </form>
 </div>

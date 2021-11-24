@@ -227,6 +227,7 @@ ul.tabs li {
 .checkout-summary {
   max-width: 500px;
   background-color: #fefefe;
+  margin: 5%;
 }
 
 .checkout-summary-title {
