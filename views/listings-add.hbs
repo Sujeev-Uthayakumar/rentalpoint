@@ -10,7 +10,7 @@
   <a href="#">Please make the necessary changes</a>
 </div>
 {{/if}}    
-      <form action="/listings/add" method="POST" autocomplete="off"> 
+      <form action="/listings/add" method="POST" enctype="multipart/form-data" autocomplete="off"> 
       <div class="row">
         <fieldset class="fieldset small-8 small-centered columns">
         <legend>Vehicle Information</legend>
@@ -74,6 +74,11 @@
       <div class="medium-6 columns">
         <label>Price
           <input type="number" placeholder="Price" name="price" />
+        </label>
+      </div>
+      <div class="medium-6 columns">
+        <label>Image Upload
+          <input type="file" name="imageFile" accept="image/*" />
         </label>
       </div>
     </fieldset>

@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+const fileUpload = require("express-fileupload");
 const dayjs = require("dayjs");
 
 const connection = require("../helpers/database");
@@ -17,6 +18,7 @@ router.use(
     saveUninitialized: true,
   })
 );
+router.use(fileUpload());
 
 router.get("/login", (req, res) => {
   if (req.session.loggedin) {
@@ -230,8 +232,8 @@ router.get("/account", (req, res) => {
     const queries = [
       "SELECT fname, lname, country, email, DATE_FORMAT(birthdate, '%Y/%m/%d') AS birthdate  FROM accounts WHERE email=?",
       "SELECT isSeller FROM verified_accounts, accounts WHERE verified_accounts.user_id = accounts.id AND accounts.email = ?",
-      "SELECT listings.price, full_listings.state, full_listings.manufacturer, full_listings.model, full_listings.car_year, listings.listing_id, host_id, DATE_FORMAT(datecreated, '%Y/%m/%d') AS datecreated, price, DATE_FORMAT(avaliable_start, '%Y/%m/%d') AS start, DATE_FORMAT(avaliable_end,'%Y/%m/%d') AS end, location FROM listings JOIN listing_car AS full_listings ON listings.listing_id = full_listings.listing_id WHERE host_id IN (SELECT user_id FROM verified_accounts,accounts WHERE accounts.email=? AND verified_accounts.user_id = accounts.id)",
-      "SELECT DATE_FORMAT(rented_cars.datecreated, '%Y/%m/%d') AS datecreated, rented_cars.order_id, DATE_FORMAT(rented_cars.pickup, '%Y/%m/%d') AS pickup, DATE_FORMAT(rented_cars.dropoff, '%Y/%m/%d') AS dropoff, listing_car.manufacturer, listing_car.model, listing_car.car_year, rented_cars.location, accounts.email, accounts.fname, accounts.lname, full_listings.price, rented_cars.price AS total FROM listings AS full_listings JOIN rented_cars ON rented_cars.listing_id = full_listings.listing_id JOIN accounts ON accounts.id = full_listings.host_id JOIN listing_car ON listing_car.car_id = rented_cars.car_id WHERE rented_cars.buyer_id=?",
+      "SELECT listings.price, listings.picture AS picture, full_listings.state, full_listings.manufacturer, full_listings.model, full_listings.car_year, listings.listing_id, host_id, DATE_FORMAT(datecreated, '%Y/%m/%d') AS datecreated, price, DATE_FORMAT(avaliable_start, '%Y/%m/%d') AS start, DATE_FORMAT(avaliable_end,'%Y/%m/%d') AS end, location FROM listings JOIN listing_car AS full_listings ON listings.listing_id = full_listings.listing_id WHERE host_id IN (SELECT user_id FROM verified_accounts,accounts WHERE accounts.email=? AND verified_accounts.user_id = accounts.id)",
+      "SELECT DATE_FORMAT(rented_cars.datecreated, '%Y/%m/%d') AS datecreated, rented_cars.order_id, DATE_FORMAT(rented_cars.pickup, '%Y/%m/%d') AS pickup, DATE_FORMAT(rented_cars.dropoff, '%Y/%m/%d') AS dropoff, listing_car.manufacturer, listing_car.model, listing_car.car_year, rented_cars.location, accounts.email, accounts.fname, accounts.lname, full_listings.picture AS picture,full_listings.price, rented_cars.price AS total FROM listings AS full_listings JOIN rented_cars ON rented_cars.listing_id = full_listings.listing_id JOIN accounts ON accounts.id = full_listings.host_id JOIN listing_car ON listing_car.car_id = rented_cars.car_id WHERE rented_cars.buyer_id=?",
       "SELECT DATE_FORMAT(full_listings.datecreated, '%Y/%m/%d') AS purchaseDate, full_listings.price, full_listings.order_id, DATE_FORMAT(full_listings.pickup, '%Y/%m/%d') AS pickup, DATE_FORMAT(full_listings.dropoff, '%Y/%m/%d') AS dropoff, listing_car.manufacturer, listing_car.model, listing_car.car_year, accounts.email, accounts.fname, accounts.lname, listing_car.state, full_listings.location FROM rented_cars AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON full_listings.buyer_id = accounts.id WHERE full_listings.listing_id IN(SELECT listing_id FROM listings WHERE listings.host_id = ?) ORDER BY full_listings.order_id DESC",
     ];
     connection().query(

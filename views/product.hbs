@@ -7,10 +7,11 @@
 <div class="row align-center">
   <div class="work-feature-block row">
     <div class="columns medium-6">
-      <img
-        class="work-feature-block-image"
-        src="https://wallpaperaccess.com/full/112906.jpg"
-      />
+      {{#if results.picture}}
+        <img class="work-feature-block-image" src="/images/{{results.picture}}" alt="">
+      {{else}}
+        <img class="work-feature-block-image" src="https://unsplash.it/600/600/?image=1081" alt="">
+      {{/if}}
     </div>
     <div class="product-details column medium-6 center-text-for-small-only">
       <h1>{{results.manufacturer}} {{results.model}} {{results.car_year}}</h1>

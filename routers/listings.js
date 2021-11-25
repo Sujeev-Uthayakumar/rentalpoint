@@ -10,12 +10,11 @@ const capitilize = require("../helpers/capitalize");
 dayjs.extend(isSameOrBefore);
 
 router.use(express.json());
-
 router.get("/listings", (req, res) => {
   if (req.session.loggedin) {
     const queries = [
       "SELECT country FROM accounts WHERE id = ?",
-      "SELECT full_listings.listing_id, full_listings.location, DATE_FORMAT(full_listings.avaliable_start, '%Y/%m/%d') AS avaliable_start,DATE_FORMAT(full_listings.avaliable_end, '%Y/%m/%d') AS avaliable_end, listing_car.manufacturer, listing_car.model, listing_car.car_year, accounts.fname, accounts.lname, DATE_FORMAT(full_listings.datecreated, '%Y/%m/%d') AS datecreated, listing_car.seats, listing_car.state, full_listings.price FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON full_listings.host_id = accounts.id WHERE full_listings.location=?",
+      "SELECT full_listings.listing_id, full_listings.location, DATE_FORMAT(full_listings.avaliable_start, '%Y/%m/%d') AS avaliable_start,DATE_FORMAT(full_listings.avaliable_end, '%Y/%m/%d') AS avaliable_end, listing_car.manufacturer, listing_car.model, listing_car.car_year, accounts.fname, accounts.lname, DATE_FORMAT(full_listings.datecreated, '%Y/%m/%d') AS datecreated, listing_car.seats, listing_car.state, full_listings.price, full_listings.picture FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON full_listings.host_id = accounts.id WHERE full_listings.location=?",
       "SELECT isSeller FROM verified_accounts, accounts WHERE verified_accounts.user_id = accounts.id AND accounts.email = ?",
     ];
     connection().query(
@@ -51,11 +50,13 @@ router.post("/listings/add", (req, res) => {
       req.body.datestart &&
       req.body.dateend &&
       req.body.price &&
-      req.body.year
+      req.body.year &&
+      (req.files || Object.keys(req.files).length > 0)
     ) {
       const start = dayjs(req.body.datestart);
       const end = dayjs(req.body.dateend);
       const now = dayjs();
+
       if (start.diff(end, "day", true) >= 0) {
         res.render("listings-add", {
           errorMessage:
@@ -89,33 +90,45 @@ router.post("/listings/add", (req, res) => {
           loggedIn: req.session.loggedin,
         });
       } else {
-        connection().query(
-          "INSERT INTO listings(host_id, price, avaliable_start, avaliable_end, location) VALUES(?, ?, ?, ?, ?)",
-          [
-            req.session.userid,
-            req.body.price,
-            req.body.datestart,
-            req.body.dateend,
-            req.body.country,
-          ],
-          function (error, results, fields) {
-            res.redirect("/listings");
-            connection().query(
-              "INSERT INTO listing_car(listing_id, manufacturer, model, car_year, seats, state) VALUES(?, ?, ?, ?, ?, ?)",
-              [
-                results.insertId,
-                capitilize(req.body.manufacturer),
-                capitilize(req.body.model),
-                req.body.year,
-                req.body.seats,
-                req.body.condition,
-              ],
-              function (error, results, fields) {
-                res.redirect("/listings");
-              }
-            );
+        let imageFile;
+        let uploadPath;
+        imageFile = req.files.imageFile;
+        uploadPath = process.cwd() + "/public/images/" + imageFile.name;
+        console.log(imageFile);
+        imageFile.mv(uploadPath, function (error) {
+          if (error) {
+            res.render("listings-add", {
+              errorMessage: "There was a problem uploading your image",
+              loggedIn: req.session.loggedin,
+            });
           }
-        );
+          res.redirect("/listings");
+          connection().query(
+            "INSERT INTO listings(host_id, price, picture, avaliable_start, avaliable_end, location) VALUES(?, ?, ?, ?, ?, ?)",
+            [
+              req.session.userid,
+              Math.round(req.body.price * 100) / 100,
+              imageFile.name,
+              req.body.datestart,
+              req.body.dateend,
+              req.body.country,
+            ],
+            function (error, results, fields) {
+              connection().query(
+                "INSERT INTO listing_car(listing_id, manufacturer, model, car_year, seats, state) VALUES(?, ?, ?, ?, ?, ?)",
+                [
+                  results.insertId,
+                  capitilize(req.body.manufacturer),
+                  capitilize(req.body.model),
+                  req.body.year,
+                  req.body.seats,
+                  req.body.condition,
+                ],
+                function (error, results, fields) {}
+              );
+            }
+          );
+        });
       }
     } else {
       res.render("listings-add", {
@@ -130,7 +143,7 @@ router.post("/listings/add", (req, res) => {
 
 router.post("/search", (req, res) => {
   connection().query(
-    "SELECT fname, lname, price,DATE_FORMAT(datecreated, '%Y/%m/%d') AS datecreated, DATE_FORMAT(avaliable_start, '%Y/%m/%d') as avaliable_start, DATE_FORMAT(avaliable_end, '%Y/%m/%d') AS avaliable_end, location, manufacturer, model, car_year, seats, state, price FROM accounts, listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id  WHERE full_listings.location = ? AND listing_car.seats = ? AND accounts.id = host_id",
+    "SELECT fname, lname, price,DATE_FORMAT(datecreated, '%Y/%m/%d') AS datecreated, DATE_FORMAT(avaliable_start, '%Y/%m/%d') as avaliable_start, DATE_FORMAT(avaliable_end, '%Y/%m/%d') AS avaliable_end, location, manufacturer, model, car_year, seats, state, price, full_listings.picture AS picture FROM accounts, listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id  WHERE full_listings.location = ? AND listing_car.seats = ? AND accounts.id = host_id",
     [req.body.locationSearch, req.body.seatSearch],
     function (error, results, fields) {
       res.render("carlistings", {
@@ -145,7 +158,7 @@ router.get("/listings/:id", (req, res) => {
   if (req.session.loggedin) {
     const queries = [
       "SELECT DATE_FORMAT(datecreated, '%Y-%m-%d') AS date_created, DATE_FORMAT(avaliable_start, '%Y-%m-%d') AS start_date, DATE_FORMAT(avaliable_end, '%Y-%m-%d') AS end_date FROM listings WHERE listing_id = ?",
-      "SELECT full_listings.listing_id, DATE_FORMAT(full_listings.datecreated, '%Y-%m-%d') AS datecreated, accounts.email, accounts.fname, accounts.lname, full_listings.price, full_listings.location, listing_car.manufacturer, listing_car.model, listing_car.car_year, listing_car.state, listing_car.seats FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON accounts.id = full_listings.host_id WHERE full_listings.listing_id = ?",
+      "SELECT full_listings.picture, full_listings.listing_id, DATE_FORMAT(full_listings.datecreated, '%Y-%m-%d') AS datecreated, accounts.email, accounts.fname, accounts.lname, full_listings.price, full_listings.location, listing_car.manufacturer, listing_car.model, listing_car.car_year, listing_car.state, listing_car.seats FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id JOIN accounts ON accounts.id = full_listings.host_id WHERE full_listings.listing_id = ?",
       "SELECT DATE_FORMAT(pickup, '%Y-%m-%d') AS 'from', DATE_FORMAT(dropoff, '%Y-%m-%d') AS 'to' FROM rented_cars WHERE rented_cars.listing_id = ?",
     ];
     connection().query(
