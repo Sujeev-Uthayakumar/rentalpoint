@@ -137,7 +137,14 @@ A user account is made when you register through the regular portable, you can c
 - [Nodemon: 2.0.15](https://www.npmjs.com/package/nodemon)
 
 ## Screenshots
-![Alt text](https://ibb.co/Syz6qm4 "Optional title")
+### Home Page
+![HomePage](https://i.ibb.co/h9SgpdJ/Screen-Shot-2021-11-25-at-6-36-23-AM.png "Home Page")
+### Listings Page
+![ListingsPage](https://i.ibb.co/FbDyYKf/Screen-Shot-2021-11-25-at-6-36-57-AM.png "Listings Page")
+### My Accounts Page
+![AccountPage](https://i.ibb.co/ZhbH03F/Screen-Shot-2021-11-25-at-6-37-09-AM.png "Accounts Page")
+### Product Page
+![ProductPage](https://i.ibb.co/JzTZ0ts/Screen-Shot-2021-11-25-at-6-38-09-AM.png "Product Page")
 
 ## Features
 - Ability to create accounts, seller or user accounts
