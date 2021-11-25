@@ -69,12 +69,12 @@ router.post("/listings/add", (req, res) => {
             "The start date must at least start after today, so begin your listing starting tomorrow",
           loggedIn: req.session.loggedin,
         });
-      } else if (req.body.condition > 10 && req.body.condition < 1) {
+      } else if (req.body.condition > 10 || req.body.condition < 1) {
         res.render("listings-add", {
           errorMessage: "The condition input field is not an acceptable value",
           loggedIn: req.session.loggedin,
         });
-      } else if (req.body.seats < 10 && req.body.seats > 1) {
+      } else if (req.body.seats > 10 || req.body.seats < 1) {
         res.render("listings-add", {
           errorMessage: "The car capacity should qualify as a consumer vehicle",
           loggedIn: req.session.loggedin,
@@ -102,7 +102,6 @@ router.post("/listings/add", (req, res) => {
               loggedIn: req.session.loggedin,
             });
           }
-          res.redirect("/listings");
           connection().query(
             "INSERT INTO listings(host_id, price, picture, avaliable_start, avaliable_end, location) VALUES(?, ?, ?, ?, ?, ?)",
             [
@@ -124,7 +123,9 @@ router.post("/listings/add", (req, res) => {
                   req.body.seats,
                   req.body.condition,
                 ],
-                function (error, results, fields) {}
+                function (error, results, fields) {
+                  res.redirect("/listings");
+                }
               );
             }
           );
