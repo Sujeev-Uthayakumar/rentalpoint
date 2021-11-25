@@ -283,10 +283,16 @@ router.post("/account", (req, res) => {
 router.get("/account/:id", (req, res) => {
   console.log(req.params);
   if (req.session.loggedin) {
-    connection().query(
+    const queries = [
+      "SET FOREIGN_KEY_CHECKS=?",
       "DELETE full_listings, listing_car FROM listings AS full_listings JOIN listing_car ON full_listings.listing_id = listing_car.listing_id WHERE full_listings.listing_id=?",
-      [req.params.id],
+      "SET FOREIGN_KEY_CHECKS=?",
+    ];
+    connection().query(
+      queries.join(";"),
+      [0, req.params.id, 1],
       function (error, results, fields) {
+        console.log(error);
         res.redirect("/account");
       }
     );
