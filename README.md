@@ -4,15 +4,13 @@ RentalPoint is the culmination of phase 1 and phase 2, and the final implementat
 ## Table of Contents
 - [Installation](#installation)
   - [Database Setup](#database-setup)
-  - [Setting up Dev Enviornment]  
-- [Application Usage]
-- [Frameworks Used]
+  - [Setting up Dev Enviornment](#setting-up-dev-environment)  
+- [Application Usage](#application-usage)
+- [Frameworks Used](#frameworks-used)
   - [Dependencies](#dependencies)
   - [Development Dependencies](#development-dependencies) 
-- [Screenshots]
-  - [Regular Account]
-  - [Seller Account]   
-- [Features]
+- [Screenshots](#screenshots)
+- [Features](#features)
 - [Links](#links)
 
 ## Installation
