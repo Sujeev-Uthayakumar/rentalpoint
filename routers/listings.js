@@ -50,8 +50,7 @@ router.post("/listings/add", (req, res) => {
       req.body.datestart &&
       req.body.dateend &&
       req.body.price &&
-      req.body.year &&
-      (req.files || Object.keys(req.files).length > 0)
+      req.body.year
     ) {
       const start = dayjs(req.body.datestart);
       const end = dayjs(req.body.dateend);
@@ -69,12 +68,12 @@ router.post("/listings/add", (req, res) => {
             "The start date must at least start after today, so begin your listing starting tomorrow",
           loggedIn: req.session.loggedin,
         });
-      } else if (req.body.condition > 10 && req.body.condition < 1) {
+      } else if (req.body.condition > 10 || req.body.condition < 1) {
         res.render("listings-add", {
           errorMessage: "The condition input field is not an acceptable value",
           loggedIn: req.session.loggedin,
         });
-      } else if (req.body.seats < 10 && req.body.seats > 1) {
+      } else if (req.body.seats > 10 || req.body.seats < 1) {
         res.render("listings-add", {
           errorMessage: "The car capacity should qualify as a consumer vehicle",
           loggedIn: req.session.loggedin,
@@ -90,45 +89,32 @@ router.post("/listings/add", (req, res) => {
           loggedIn: req.session.loggedin,
         });
       } else {
-        let imageFile;
-        let uploadPath;
-        imageFile = req.files.imageFile;
-        uploadPath = process.cwd() + "/public/images/" + imageFile.name;
-        console.log(imageFile);
-        imageFile.mv(uploadPath, function (error) {
-          if (error) {
-            res.render("listings-add", {
-              errorMessage: "There was a problem uploading your image",
-              loggedIn: req.session.loggedin,
-            });
+        connection().query(
+          "INSERT INTO listings(host_id, price, avaliable_start, avaliable_end, location) VALUES(?, ?, ?, ?, ?)",
+          [
+            req.session.userid,
+            Math.round(req.body.price * 100) / 100,
+            req.body.datestart,
+            req.body.dateend,
+            req.body.country,
+          ],
+          function (error, results, fields) {
+            connection().query(
+              "INSERT INTO listing_car(listing_id, manufacturer, model, car_year, seats, state) VALUES(?, ?, ?, ?, ?, ?)",
+              [
+                results.insertId,
+                capitilize(req.body.manufacturer),
+                capitilize(req.body.model),
+                req.body.year,
+                req.body.seats,
+                req.body.condition,
+              ],
+              function (error, results, fields) {
+                res.redirect("/listings");
+              }
+            );
           }
-          res.redirect("/listings");
-          connection().query(
-            "INSERT INTO listings(host_id, price, picture, avaliable_start, avaliable_end, location) VALUES(?, ?, ?, ?, ?, ?)",
-            [
-              req.session.userid,
-              Math.round(req.body.price * 100) / 100,
-              imageFile.name,
-              req.body.datestart,
-              req.body.dateend,
-              req.body.country,
-            ],
-            function (error, results, fields) {
-              connection().query(
-                "INSERT INTO listing_car(listing_id, manufacturer, model, car_year, seats, state) VALUES(?, ?, ?, ?, ?, ?)",
-                [
-                  results.insertId,
-                  capitilize(req.body.manufacturer),
-                  capitilize(req.body.model),
-                  req.body.year,
-                  req.body.seats,
-                  req.body.condition,
-                ],
-                function (error, results, fields) {}
-              );
-            }
-          );
-        });
+        );
       }
     } else {
       res.render("listings-add", {
