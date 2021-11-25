@@ -74,7 +74,7 @@ router.post("/listings/add", (req, res) => {
           errorMessage: "The condition input field is not an acceptable value",
           loggedIn: req.session.loggedin,
         });
-      } else if (req.body.seats > 10 && req.body.seats < 1) {
+      } else if (req.body.seats < 10 && req.body.seats > 1) {
         res.render("listings-add", {
           errorMessage: "The car capacity should qualify as a consumer vehicle",
           loggedIn: req.session.loggedin,
