@@ -1,5 +1,5 @@
 # rentalpoint
-RentalPoint is the culmination of phase 1 and phase 2, and the final implementation of the car reservation system. The car registration application was chosen, due to it's more compelling use cases and to utimately demonstrate our knowlege of databases. RentalPoint was built on Node.js as the backend of this project, with Express.js to handle middleware and endpoints, along with Handlebars which was the templating engine used to display content and finally MySql is the RDMS used for the project. 
+RentalPoint is the culmination of phase 1, phase 2 and the final implementation of the car reservation system through development. The car registration application was chosen, due to it's more compelling use cases and to utimately demonstrate our knowlege of databases. RentalPoint was built on Node.js as the backend of this project, with Express.js to handle middleware and endpoints, along with Handlebars which was the templating engine used to display content. Finally, MySql is the RDMS used for the project. 
 
 ## Table of Contents
 - [Installation](#installation)
@@ -116,7 +116,7 @@ To become a seller, you must register through the seller portal which can be fou
 
 Another aspect of a seller account, is the "Listings" tab which has a special button to allow sellers to add listings. Where a seller can give information describing the vehicle, and the date range of the listing. After this listing is posted, users can view these listings and reserve based on this information.
 ### User Account
-A user account is made when you register through the regular portable, you can click "Join Now" on the home page. When a user account is made, they can view the listings in the "Listings" tab which provides listings based on the account country (which can be changed in the "My Account" tab). Based on the listing that the user favours, they can select the date range they wish to reserve the vehicle from. With this information sent to the Seller account associated with that specific listing. You can view the order within the "My Account" tab for future reference if needed.
+A user account is made when you register through the regular portal, you can click "Join Now" on the home page. When a user account is made, they can view the listings in the "Listings" tab which provides listings based on the account country (which can be changed in the "My Account" tab). Based on the listing that the user favours, they can select the date range they wish to reserve the vehicle from. With this information sent to the Seller account associated with that specific listing. You can view the order within the "My Account" tab for future reference if needed.
 
 ## Frameworks Used
 ### Dependencies:
