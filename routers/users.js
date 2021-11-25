@@ -141,10 +141,11 @@ router.post("/register", (req, res) => {
 router.get("/seller", (req, res) => {
   if (req.session.loggedin) {
     res.redirect("/account");
+  } else {
+    res.render("register-seller", {
+      loggedIn: req.session.loggedin,
+    });
   }
-  res.render("register-seller", {
-    loggedIn: req.session.loggedin,
-  });
 });
 
 router.post("/seller", (req, res) => {
