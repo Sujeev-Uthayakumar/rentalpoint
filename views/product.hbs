@@ -31,6 +31,8 @@
             method="POST"
             class="product-option-selection"
           >
+          {{#if isAvaliable}}
+          {{else}}
             <input
               id="calendar"
               name="calendar"
@@ -38,6 +40,7 @@
               placeholder="Select DateTime"
               required
             />
+          {{/if}}
 
         </div>
       </div>
