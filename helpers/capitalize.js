@@ -1,3 +1,4 @@
+// Function to santize and capitalize input from users
 function capitalizeFirstLetter(string) {
   var splitString = string.toLowerCase().split(" ");
 
@@ -9,4 +10,5 @@ function capitalizeFirstLetter(string) {
   return splitString.join(" ");
 }
 
+// Export the function to be used in other files
 module.exports = capitalizeFirstLetter;
