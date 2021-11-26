@@ -141,8 +141,7 @@ A user account is made when you register through the regular portal, you can cli
 ![ListingsPage](https://i.ibb.co/FbDyYKf/Screen-Shot-2021-11-25-at-6-36-57-AM.png "Listings Page")
 ### My Accounts Page
 ![AccountPage](https://i.ibb.co/ZhbH03F/Screen-Shot-2021-11-25-at-6-37-09-AM.png "Accounts Page")
-### Product Page
-![ProductPage](https://i.ibb.co/JzTZ0ts/Screen-Shot-2021-11-25-at-6-38-09-AM.png "Product Page")
+
 
 ## Features
 - Ability to create accounts, seller or user accounts
