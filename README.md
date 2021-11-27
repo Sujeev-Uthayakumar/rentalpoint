@@ -14,7 +14,7 @@ RentalPoint is the culmination of phase 1, phase 2 and the final implementation 
 - [Links](#links)
 
 ## Installation
-The installation process has 2 steps, the first step focuses on the creation of the schema and the appropriate tables. The second step focuses on recreating the development environment, and the setup of the connection to your new tables.
+If you want to test out the project in a timely and efficient manner, the link for the deployed website can be found below. The installation process has 2 steps, the first step focuses on the creation of the schema and the appropriate tables. The second step focuses on recreating the development environment, and the setup of the connection to your new tables.
 ### Database Setup
 Assuming a localhost setup, for the ease of creating the tables we will be running SQL scripts to build the schema and table.
 #### Schema: Car Reservation System:
