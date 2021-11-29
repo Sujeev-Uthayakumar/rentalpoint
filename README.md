@@ -14,7 +14,7 @@ RentalPoint is the culmination of phase 1, phase 2 and the final implementation 
 - [Links](#links)
 
 ## Installation
-The installation process has 2 steps, the first step focuses on the creation of the schema and the appropriate tables. The second step focuses on recreating the development environment, and the setup of the connection to your new tables.
+If you want to test out the project in a timely and efficient manner, the link for the deployed website can be found below. The installation process has 2 steps, the first step focuses on the creation of the schema and the appropriate tables. The second step focuses on recreating the development environment, and the setup of the connection to your new tables.
 ### Database Setup
 Assuming a localhost setup, for the ease of creating the tables we will be running SQL scripts to build the schema and table.
 #### Schema: Car Reservation System:
@@ -141,8 +141,9 @@ A user account is made when you register through the regular portal, you can cli
 ![ListingsPage](https://i.ibb.co/FbDyYKf/Screen-Shot-2021-11-25-at-6-36-57-AM.png "Listings Page")
 ### My Accounts Page
 ![AccountPage](https://i.ibb.co/ZhbH03F/Screen-Shot-2021-11-25-at-6-37-09-AM.png "Accounts Page")
-### Product Page
-![ProductPage](https://i.ibb.co/JzTZ0ts/Screen-Shot-2021-11-25-at-6-38-09-AM.png "Product Page")
+### Registration Page
+![RegistrationPage](https://i.ibb.co/PYMNwjZ/Screen-Shot-2021-11-26-at-8-03-35-AM.png "Registration Page")
+
 
 ## Features
 - Ability to create accounts, seller or user accounts
